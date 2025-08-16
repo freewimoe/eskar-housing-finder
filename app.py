@@ -37,7 +37,7 @@ try:
     from features.feature_engineering import ESKARFeatureEngineer
     from models.ml_ensemble import ESKARMLEnsemble
     from api.user_feedback import ESKARFeedbackSystem
-    from api.real_estate_api import ESKARRealEstateAPI
+    from api.hybrid_real_estate_api import ESKARHybridRealEstateAPI
 except ImportError as e:
     st.error(f"❌ Import error: {e}")
     st.info("💡 Make sure all production modules are available in src/ directory")
@@ -90,25 +90,58 @@ st.markdown("""
 @st.cache_resource
 def initialize_production_systems():
     """Initialize all production ML and analytics systems"""
+    config = None
+    feedback_system = None
+    real_estate_api = None
+    
+    # Try to initialize each system individually
     try:
         config = ESKARConfig()
-        feedback_system = ESKARFeedbackSystem()
-        real_estate_api = ESKARRealEstateAPI()
-        
-        # Start user session for analytics
-        if 'session_id' not in st.session_state:
-            st.session_state.session_id = feedback_system.start_user_session('esk_family')
-        
-        return config, feedback_system, real_estate_api
     except Exception as e:
-        st.warning(f"⚠️ Production systems not available: {e}")
-        return None, None, None
+        st.warning(f"⚠️ Config system not available: {e}")
+    
+    try:
+        feedback_system = ESKARFeedbackSystem()
+        # Start user session for analytics
+        if 'session_id' not in st.session_state and feedback_system:
+            st.session_state.session_id = feedback_system.start_user_session('esk_family')
+    except Exception as e:
+        st.warning(f"⚠️ Feedback system not available: {e}")
+        # Create a simple fallback feedback system
+        feedback_system = create_fallback_feedback_system()
+    
+    try:
+        real_estate_api = ESKARHybridRealEstateAPI()
+    except Exception as e:
+        st.warning(f"⚠️ Hybrid real estate API not available: {e}")
+        # Fallback to original API if available
+        try:
+            from api.real_estate_api import ESKARRealEstateAPI
+            real_estate_api = ESKARRealEstateAPI()
+        except:
+            real_estate_api = None
+    
+    return config, feedback_system, real_estate_api
+
+def create_fallback_feedback_system():
+    """Create a simple fallback feedback system for development"""
+    import random
+    class FallbackFeedback:
+        def submit_feedback(self, user_id, rating, feedback_text, feature_used="general"):
+            st.success("✅ Feedback erfasst! (Entwicklungsmodus)")
+            st.info(f"Rating: {rating}/5, Text: {feedback_text}")
+            return True
+            
+        def start_user_session(self, user_type):
+            return f"dev_session_{random.randint(1000, 9999)}"
+    
+    return FallbackFeedback()
 
 # Initialize systems
 config, feedback_system, real_estate_api = initialize_production_systems()
 
-# ESK Location and Key Employers
-ESK_LOCATION = {"lat": 49.0134, "lon": 8.4044, "name": "European School Karlsruhe"}
+# ESK Location and Key Employers (CORRECTED: Albert-Schweitzer-Str. 1, 76139 Karlsruhe)
+ESK_LOCATION = {"lat": 49.0205, "lon": 8.4194, "name": "European School Karlsruhe"}
 MAJOR_EMPLOYERS = {
     'SAP Walldorf': {"lat": 49.2933, "lon": 8.6428, "color": "red"},
     'SAP Karlsruhe': {"lat": 49.0233, "lon": 8.4103, "color": "red"},

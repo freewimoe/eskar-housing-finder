@@ -19,8 +19,8 @@ class ESKARDataGenerator:
     """Generates ESK-specific housing data for Karlsruhe"""
     
     def __init__(self):
-        # European School Karlsruhe coordinates
-        self.esk_location = {"lat": 49.0134, "lon": 8.4044, "name": "European School Karlsruhe"}
+        # European School Karlsruhe coordinates (CORRECTED: Albert-Schweitzer-Str. 1, 76139 Karlsruhe)
+        self.esk_location = {"lat": 49.0205, "lon": 8.4194, "name": "European School Karlsruhe"}
         
         # Major employers for ESK families
         self.major_employers = {
@@ -99,6 +99,40 @@ class ESKARDataGenerator:
                 'public_transport': 7.8,
                 'base_lat': 49.0169,
                 'base_lon': 8.3637
+            },
+            # NEW EXPANDED REGION: Stutensee-Bruchsal Area
+            'Stutensee': {
+                'current_esk_families': 18,
+                'avg_price_per_sqm': 3200,
+                'commute_time_esk': 22,
+                'safety_rating': 9.1,
+                'international_community': 6.5,
+                'family_friendliness': 9.3,
+                'public_transport': 7.2,
+                'base_lat': 49.0911,
+                'base_lon': 8.4530
+            },
+            'Bruchsal': {
+                'current_esk_families': 14,
+                'avg_price_per_sqm': 2900,
+                'commute_time_esk': 35,
+                'safety_rating': 8.7,
+                'international_community': 6.2,
+                'family_friendliness': 8.8,
+                'public_transport': 8.9,
+                'base_lat': 49.1240,
+                'base_lon': 8.5980
+            },
+            'Ettlingen': {
+                'current_esk_families': 16,
+                'avg_price_per_sqm': 3500,
+                'commute_time_esk': 28,
+                'safety_rating': 8.9,
+                'international_community': 7.1,
+                'family_friendliness': 9.0,
+                'public_transport': 8.3,
+                'base_lat': 48.9456,
+                'base_lon': 8.4044
             }
         }
         
@@ -195,7 +229,8 @@ class ESKARDataGenerator:
         for i in range(n_samples):
             # Select neighborhood based on ESK family distribution
             neighborhood_names = list(self.neighborhoods.keys())
-            neighborhood_weights = [0.35, 0.25, 0.15, 0.12, 0.08, 0.05]  # Based on ESK preferences
+            # Updated weights for 9 neighborhoods (sum = 1.0)
+            neighborhood_weights = [0.30, 0.22, 0.15, 0.12, 0.08, 0.05, 0.04, 0.02, 0.02]  # Based on ESK preferences + new areas
             
             neighborhood = np.random.choice(neighborhood_names, p=neighborhood_weights)
             neighborhood_info = self.neighborhoods[neighborhood]
