@@ -22,14 +22,17 @@ class ESKARDataGenerator:
         # European School Karlsruhe coordinates (CORRECTED: Albert-Schweitzer-Str. 1, 76139 Karlsruhe)
         self.esk_location = {"lat": 49.04637, "lon": 8.44805, "name": "European School Karlsruhe"}
         
-        # Major employers for ESK families
+        # Major employers for ESK families (updated with realistic Karlsruhe employers)
         self.major_employers = {
-            'sap_walldorf': {"lat": 49.2933, "lon": 8.6428, "name": "SAP Walldorf"},
-            'sap_karlsruhe': {"lat": 49.0233, "lon": 8.4103, "name": "SAP Karlsruhe"},
-            'ionos': {"lat": 49.0089, "lon": 8.3858, "name": "Ionos Karlsruhe"},
-            'kit_campus_south': {"lat": 49.0069, "lon": 8.4037, "name": "KIT Campus South"},
-            'kit_campus_north': {"lat": 49.0943, "lon": 8.4347, "name": "KIT Campus North"},
-            'research_center': {"lat": 49.0930, "lon": 8.4279, "name": "Research Center Karlsruhe"}
+            'sap_se_walldorf': {"lat": 49.2933, "lon": 8.6428, "name": "SAP SE Walldorf"},
+            'sap_labs_karlsruhe': {"lat": 49.0233, "lon": 8.4103, "name": "SAP Labs Karlsruhe"},
+            'ionos_se': {"lat": 49.0089, "lon": 8.3858, "name": "Ionos SE"},
+            'kit_campus_south': {"lat": 49.0069, "lon": 8.4037, "name": "KIT Campus Süd"},
+            'kit_campus_north': {"lat": 49.0943, "lon": 8.4347, "name": "KIT Campus Nord"},
+            'forschungszentrum': {"lat": 49.0930, "lon": 8.4279, "name": "Forschungszentrum Karlsruhe"},
+            'enbw_karlsruhe': {"lat": 49.0158, "lon": 8.4044, "name": "EnBW Karlsruhe"},
+            'dm_drogerie': {"lat": 49.0125, "lon": 8.4200, "name": "dm-drogerie markt"},
+            'siemens_karlsruhe': {"lat": 49.0200, "lon": 8.3800, "name": "Siemens Karlsruhe"}
         }
         
         # ESK family preferred neighborhoods (based on real data)
