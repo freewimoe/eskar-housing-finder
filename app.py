@@ -142,13 +142,25 @@ config, feedback_system, real_estate_api = initialize_production_systems()
 
 # ESK Location and Key Employers (PRECISE: Albert-Schweitzer-Str. 1, 76139 Karlsruhe)
 ESK_LOCATION = {"lat": 49.04637, "lon": 8.44805, "name": "European School Karlsruhe"}
+
+# Major Employers with precise coordinates (updated from feedback)
 MAJOR_EMPLOYERS = {
-    'SAP Walldorf': {"lat": 49.2933, "lon": 8.6428, "color": "red"},
-    'SAP Karlsruhe': {"lat": 49.0233, "lon": 8.4103, "color": "red"},
-    'Ionos Karlsruhe': {"lat": 49.0089, "lon": 8.3858, "color": "green"},
+    'SAP Walldorf': {"lat": 49.2933, "lon": 8.6428, "color": "blue"},
+    'SAP Karlsruhe': {"lat": 49.0233, "lon": 8.4103, "color": "blue"},
+    'Ionos Karlsruhe': {"lat": 49.0089, "lon": 8.3858, "color": "blue"},
     'KIT Campus South': {"lat": 49.0069, "lon": 8.4037, "color": "blue"},
     'KIT Campus North': {"lat": 49.0943, "lon": 8.4347, "color": "blue"},
-    'Research Center': {"lat": 49.0930, "lon": 8.4279, "color": "purple"}
+    'Research Center': {"lat": 49.0930, "lon": 8.4279, "color": "blue"},
+    'EnBW Karlsruhe': {"lat": 49.006450040902145, "lon": 8.437177202431728, "color": "blue"},
+    'dm Karlsruhe': {"lat": 49.00299770848193, "lon": 8.456215912548018, "color": "blue"}
+}
+
+# Major Reference Points for orientation
+MAJOR_POINTS = {
+    'Klinikum Karlsruhe': {"lat": 49.018946188108764, "lon": 8.371897980517069, "color": "gray"},
+    'Hauptbahnhof Karlsruhe': {"lat": 48.99535399579631, "lon": 8.400132211538523, "color": "gray"},
+    'Messe Karlsruhe': {"lat": 48.98051198180659, "lon": 8.32680592186435, "color": "gray"},
+    'Bahnhof Ettlingen': {"lat": 48.93958851101495, "lon": 8.40940991628156, "color": "gray"}
 }
 
 @st.cache_data
@@ -701,6 +713,14 @@ def show_interactive_map():
             icon=folium.Icon(color=data['color'], icon='briefcase', prefix='fa')
         ).add_to(m)
     
+    # Add reference points for orientation
+    for point, data in MAJOR_POINTS.items():
+        folium.Marker(
+            [data['lat'], data['lon']],
+            popup=f"<b>📍 {point}</b><br><em>Important reference point</em>",
+            icon=folium.Icon(color=data['color'], icon='map-marker', prefix='fa')
+        ).add_to(m)
+    
     # Add property markers with color coding based on ESK score
     for idx, row in map_df.iterrows():
         # Color based on ESK suitability score
@@ -748,7 +768,8 @@ def show_interactive_map():
         st.markdown("""
         **🗺️ Map Legend:**
         - 🔴 **European School Karlsruhe** - Main reference point
-        - 💼 **Major Employers** - SAP, KIT, Ionos, Research Centers
+        - � **Major Employers** - SAP, KIT, EnBW, dm, Ionos, Research Centers
+        - ⚫ **Reference Points** - Hospital, Train Stations, Trade Fair
         - 🟢 **Excellent Properties** (ESK Score ≥ 80)
         - 🟠 **Good Properties** (ESK Score ≥ 70)  
         - 🔵 **Fair Properties** (ESK Score ≥ 60)
