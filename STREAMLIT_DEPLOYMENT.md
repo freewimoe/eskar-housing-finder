@@ -14,7 +14,7 @@ Visit: https://share.streamlit.io/
 Repository: freewimoe/eskar-housing-finder
 Branch: main
 Main file path: app.py
-Python version: 3.9
+Python version: 3.12 (auto-detected from runtime.txt)
 ```
 
 ### Step 4: Deploy
