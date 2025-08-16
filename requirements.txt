@@ -1,0 +1,62 @@
+# ESKAR Housing Finder - Advanced ML Pipeline
+# Code Institute PP5 - Production Ready ML Application
+
+# Core Web Framework
+streamlit>=1.47.0
+
+# Data Science & ML Core
+pandas>=2.3.0
+numpy>=2.1.0
+scikit-learn>=1.7.0
+
+# Advanced ML Models
+xgboost>=2.0.0
+lightgbm>=4.0.0
+
+# Model Management & Optimization  
+joblib>=1.3.0
+optuna>=3.3.0
+
+# Visualization
+plotly>=6.1.0
+folium>=0.14.0
+
+# Configuration Management
+pyyaml>=6.0
+
+# API Integration & Production Features
+requests>=2.31.0
+scipy>=1.13.0
+
+# Data Persistence (built-in with Python)
+# sqlite3 is included with Python standard library
+
+# Additional Production Dependencies
+datetime  # Built-in
+hashlib   # Built-in
+json      # Built-in
+logging   # Built-in
+pathlib   # Built-in
+typing    # Built-in
+plotly>=6.1.0
+seaborn>=0.12.0
+matplotlib>=3.7.0
+
+# Geospatial & Maps
+folium>=0.14.0
+streamlit-folium>=0.13.0
+geopandas>=0.14.0
+geopy>=2.3.0
+
+# API & Data Fetching
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# Utilities
+python-dateutil>=2.8.2
+tqdm>=4.65.0
+
+# Development & Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0

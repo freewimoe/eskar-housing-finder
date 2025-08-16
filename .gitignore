@@ -1,0 +1,52 @@
+# ESKAR Housing Finder - .gitignore
+# Code Institute Portfolio Project 5
+
+# Personal Documentation (Mentoring & Development)
+docs/personal/
+DEVELOPMENT_NOTES.md
+docs/copilot-sessions/
+.specstory/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data (keep sample data, exclude large datasets)
+data/raw/*.csv
+!data/raw/sample_*.csv
+data/processed/
+models/trained/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Heroku
+.env
+*.env
