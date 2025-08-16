@@ -1,0 +1,16 @@
+[theme]
+# ESKAR Housing Finder - Streamlit Cloud Theme
+primaryColor = "#1f77b4"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f0f2f6"
+textColor = "#262730"
+
+[server]
+# Streamlit Cloud Settings
+headless = true
+enableCORS = false
+enableXsrfProtection = false
+
+[browser]
+# Browser Settings
+gatherUsageStats = false
