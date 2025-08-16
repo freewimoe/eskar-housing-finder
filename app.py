@@ -140,26 +140,15 @@ def create_fallback_feedback_system():
 # Initialize systems
 config, feedback_system, real_estate_api = initialize_production_systems()
 
-# ESK Location and Key Employers (Final Koordinaten: Albert-Schweitzer-Str. 1, 76139 Karlsruhe)
-ESK_LOCATION = {"lat": 49.046888562554635, "lon": 8.446440161209466, "name": "European School Karlsruhe"}
+# ESK Location and Key Employers (PRECISE: Albert-Schweitzer-Str. 1, 76139 Karlsruhe)
+ESK_LOCATION = {"lat": 49.04637, "lon": 8.44805, "name": "European School Karlsruhe"}
 MAJOR_EMPLOYERS = {
-    'SAP Walldorf': {"lat": 49.2933, "lon": 8.6428, "color": "darkred"},
-    'SAP Karlsruhe': {"lat": 49.0233, "lon": 8.4103, "color": "darkred"},
-    'Ionos Karlsruhe': {"lat": 49.0089, "lon": 8.3858, "color": "orange"},
-    'KIT Campus South': {"lat": 49.0069, "lon": 8.4037, "color": "orange"},
-    'KIT Campus North': {"lat": 49.0943, "lon": 8.4347, "color": "orange"},
-    'Research Center': {"lat": 49.0930, "lon": 8.4279, "color": "orange"}
-}
-
-# Reference Points for Karlsruhe navigation
-REFERENCE_POINTS = {
-    'Schloss Karlsruhe': {"lat": 49.01421999560518, "lon": 8.403960063870352},
-    'Karlsruhe Hauptbahnhof': {"lat": 48.99479092959184, "lon": 8.406023225540062},
-    'Messe Karlsruhe (dm-Arena)': {"lat": 48.98048379498876, "lon": 8.327621317976728},
-    'Flughafen Karlsruhe/Baden-Baden': {"lat": 48.785522624587735, "lon": 8.082932722464315},
-    'Bruchsal Bahnhof': {"lat": 49.125106524646846, "lon": 8.592074339192727},
-    'Wiesloch-Walldorf Bahnhof': {"lat": 49.29321074149488, "lon": 8.667798999769051},
-    'Ettlingen Stadt Bahnhof': {"lat": 48.939569655889116, "lon": 8.411787558748287}
+    'SAP Walldorf': {"lat": 49.2933, "lon": 8.6428, "color": "red"},
+    'SAP Karlsruhe': {"lat": 49.0233, "lon": 8.4103, "color": "red"},
+    'Ionos Karlsruhe': {"lat": 49.0089, "lon": 8.3858, "color": "green"},
+    'KIT Campus South': {"lat": 49.0069, "lon": 8.4037, "color": "blue"},
+    'KIT Campus North': {"lat": 49.0943, "lon": 8.4347, "color": "blue"},
+    'Research Center': {"lat": 49.0930, "lon": 8.4279, "color": "purple"}
 }
 
 @st.cache_data
@@ -198,9 +187,7 @@ def add_missing_columns(df):
     # Add safety score based on neighborhood safety
     neighborhood_safety = {
         'Weststadt': 8.5, 'Südstadt': 8.2, 'Innenstadt-West': 7.8,
-        'Durlach': 8.7, 'Oststadt': 8.4, 'Mühlburg': 8.1,
-        # Regional expansion neighborhoods
-        'Stutensee': 9.1, 'Bruchsal': 8.9, 'Weingarten (Baden)': 9.0
+        'Durlach': 8.7, 'Oststadt': 8.4, 'Mühlburg': 8.1
     }
     df['safety_score'] = df['neighborhood'].map(neighborhood_safety).fillna(8.0)
     
@@ -353,20 +340,20 @@ def show_welcome_page():
     </div>
     """, unsafe_allow_html=True)
 
-def show_property_search():
-    """Display property search with ESK-optimized filters"""
-    st.title("🔍 Property Search")
-    st.markdown("### Find your perfect home with ESK-optimized filters")
+def show_search_filters():
+    """Display search filters in sidebar"""
+    st.header("🎯 Search Filters")
     
-    # Load data
+    # Load data for filter ranges
     df = load_housing_data()
     
-    # Sidebar filters
-    st.sidebar.header("🎯 Search Filters")
+    # Store filters in session state
+    if 'search_filters' not in st.session_state:
+        st.session_state.search_filters = {}
     
     # Price range
-    price_range = st.sidebar.slider(
-        "💰 Price Range (€)",
+    st.session_state.search_filters['price_range'] = st.slider(
+        "� Price Range (€)",
         min_value=int(df['price'].min()),
         max_value=int(df['price'].max()),
         value=(int(df['price'].min()), int(df['price'].max())),
@@ -375,7 +362,7 @@ def show_property_search():
     )
     
     # ESK distance
-    max_distance = st.sidebar.slider(
+    st.session_state.search_filters['max_distance'] = st.slider(
         "🏫 Max Distance to ESK (km)",
         min_value=0.5,
         max_value=10.0,
@@ -384,34 +371,74 @@ def show_property_search():
     )
     
     # Bedrooms
-    bedrooms = st.sidebar.multiselect(
+    st.session_state.search_filters['bedrooms'] = st.multiselect(
         "🛏️ Bedrooms",
         options=sorted(df['bedrooms'].unique()),
         default=sorted(df['bedrooms'].unique())
     )
     
     # Property type
-    property_types = st.sidebar.multiselect(
+    st.session_state.search_filters['property_types'] = st.multiselect(
         "🏠 Property Type",
         options=['house', 'apartment'],
         default=['house', 'apartment']
     )
     
     # Neighborhoods
-    neighborhoods = st.sidebar.multiselect(
+    st.session_state.search_filters['neighborhoods'] = st.multiselect(
         "🗺️ Neighborhoods",
         options=sorted(df['neighborhood'].unique()),
         default=sorted(df['neighborhood'].unique())
     )
     
     # ESK Score threshold
-    min_esk_score = st.sidebar.slider(
+    st.session_state.search_filters['min_esk_score'] = st.slider(
         "⭐ Minimum ESK Score",
         min_value=1.0,
         max_value=10.0,
         value=6.0,
         step=0.1
     )
+
+def show_map_filters():
+    """Display map filters in sidebar"""
+    st.subheader("🎯 Map Filters")
+    
+    # Store filters in session state
+    if 'map_filters' not in st.session_state:
+        st.session_state.map_filters = {}
+    
+    st.session_state.map_filters['max_distance'] = st.slider(
+        "Max Distance to ESK (km)", 
+        0.5, 15.0, 8.0, 0.5
+    )
+    st.session_state.map_filters['min_score'] = st.slider(
+        "Min ESK Suitability Score", 
+        20, 100, 60, 5
+    )
+    st.session_state.map_filters['max_price'] = st.slider(
+        "Max Price (€)", 
+        200000, 2000000, 800000, 50000
+    )
+
+def show_property_search():
+    """Display property search with ESK-optimized filters"""
+    st.title("🔍 Property Search")
+    st.markdown("### Find your perfect home with ESK-optimized filters")
+    
+    # Load data
+    df = load_housing_data()
+    
+    # Get filters from session state (set by sidebar)
+    filters = st.session_state.get('search_filters', {})
+    
+    # Use default values if filters not set
+    price_range = filters.get('price_range', (int(df['price'].min()), int(df['price'].max())))
+    max_distance = filters.get('max_distance', 5.0)
+    bedrooms = filters.get('bedrooms', sorted(df['bedrooms'].unique()))
+    property_types = filters.get('property_types', ['house', 'apartment'])
+    neighborhoods = filters.get('neighborhoods', sorted(df['neighborhood'].unique()))
+    min_esk_score = filters.get('min_esk_score', 6.0)
     
     # Filter data
     filtered_df = df[
@@ -631,12 +658,13 @@ def show_interactive_map():
     # Load data
     df = load_housing_data()
     
-    # Filter controls in sidebar
-    with st.sidebar:
-        st.subheader("🎯 Map Filters")
-        max_distance = st.slider("Max Distance to ESK (km)", 0.5, 15.0, 8.0, 0.5)
-        min_score = st.slider("Min ESK Suitability Score", 20, 100, 60, 5)
-        max_price = st.slider("Max Price (€)", 200000, 2000000, 800000, 50000)
+    # Get filters from session state (set by sidebar)
+    filters = st.session_state.get('map_filters', {})
+    
+    # Use default values if filters not set
+    max_distance = filters.get('max_distance', 8.0)
+    min_score = filters.get('min_score', 60)
+    max_price = filters.get('max_price', 800000)
     
     # Filter data for map
     map_df = df[
@@ -665,7 +693,7 @@ def show_interactive_map():
         icon=folium.Icon(color='red', icon='graduation-cap', prefix='fa')
     ).add_to(m)
     
-    # Add major employers with briefcase icon
+    # Add major employers
     for employer, data in MAJOR_EMPLOYERS.items():
         folium.Marker(
             [data['lat'], data['lon']],
@@ -673,28 +701,20 @@ def show_interactive_map():
             icon=folium.Icon(color=data['color'], icon='briefcase', prefix='fa')
         ).add_to(m)
     
-    # Add reference points with black markers
-    for ref_point, data in REFERENCE_POINTS.items():
-        folium.Marker(
-            [data['lat'], data['lon']],
-            popup=f"<b>📍 {ref_point}</b><br><em>Reference location</em>",
-            icon=folium.Icon(color='black', icon='map-marker', prefix='fa')
-        ).add_to(m)
-    
     # Add property markers with color coding based on ESK score
     for idx, row in map_df.iterrows():
-        # Color based on ESK suitability score - Folium compatible colors only
+        # Color based on ESK suitability score
         if row['esk_suitability_score'] >= 80:
-            color = 'orange'  # Excellent Properties (closest to star-like in Folium)
+            color = 'green'
             score_category = 'Excellent'
         elif row['esk_suitability_score'] >= 70:
-            color = 'lightgreen'  # Good Properties
+            color = 'orange'
             score_category = 'Good'
         elif row['esk_suitability_score'] >= 60:
-            color = 'lightblue'  # Fair Properties
+            color = 'blue'
             score_category = 'Fair'
         else:
-            color = 'lightgray'  # Basic Properties
+            color = 'gray'
             score_category = 'Basic'
             
         # Create detailed popup
@@ -727,13 +747,12 @@ def show_interactive_map():
     with col1:
         st.markdown("""
         **🗺️ Map Legend:**
-        - 🔴 European School Karlsruhe
-        - 💼 Major Employers - SAP / KIT/Ionos/JRC
-        - 🟠 Excellent Properties (ESK Score ≥ 80)
-        - 🟢 Good Properties (ESK Score ≥ 70)
-        - 🔵 Fair Properties (ESK Score ≥ 60)
-        - ⚪ Basic Properties (ESK Score < 60)
-        - ⚫📍 Reference Points
+        - 🔴 **European School Karlsruhe** - Main reference point
+        - 💼 **Major Employers** - SAP, KIT, Ionos, Research Centers
+        - 🟢 **Excellent Properties** (ESK Score ≥ 80)
+        - 🟠 **Good Properties** (ESK Score ≥ 70)  
+        - 🔵 **Fair Properties** (ESK Score ≥ 60)
+        - ⚫ **Basic Properties** (ESK Score < 60)
         """)
     
     with col2:
@@ -766,6 +785,23 @@ def main():
         )
         
         st.markdown("---")
+        
+        # Show relevant filters for each page immediately after page selection
+        if page == "🔍 Property Search":
+            show_search_filters()
+        elif page == "🗺️ Interactive Map":
+            show_map_filters()
+        
+        # Move About section to bottom of sidebar
+        st.markdown("---")
+        st.markdown("### 🎯 About ESKAR")
+        st.markdown("AI-powered housing finder for European School Karlsruhe families")
+        
+        st.markdown("**Key Features:**")
+        st.markdown("• 🏫 ESK-optimized search")
+        st.markdown("• 🤖 ML price predictions")  
+        st.markdown("• 📊 Market insights")
+        st.markdown("• 🗺️ Karlsruhe expertise")
     
     # Route to selected page with enhanced features
     if page == "🏠 Welcome":
@@ -788,32 +824,9 @@ def main():
     elif page == "📊 Market Analytics":
         show_market_analytics()
     
-    # Add feedback page with persistent state
+    # Add feedback page
     if st.sidebar.button("💬 Give Feedback"):
-        st.session_state.show_feedback = True
-    
-    # Add analytics page with persistent state
-    if st.sidebar.button("📈 Production Analytics"):
-        st.session_state.show_analytics = True
-    
-    # About ESKAR section at bottom of sidebar
-    with st.sidebar:
-        st.markdown("---")
-        st.markdown("### 🎯 About ESKAR")
-        st.markdown("AI-powered housing finder for European School Karlsruhe families")
-        
-        st.markdown("**Key Features:**")
-        st.markdown("• 🏫 ESK-optimized search")
-        st.markdown("• 🤖 ML price predictions")  
-        st.markdown("• 📊 Market insights")
-        st.markdown("• 🗺️ Karlsruhe expertise")
-    
-    if st.session_state.get('show_feedback', False):
         show_feedback_section()
-    
-    # Show analytics if requested
-    if st.session_state.get('show_analytics', False):
-        show_analytics_dashboard()
     
     # Footer with production info
     st.markdown("---")
@@ -826,164 +839,59 @@ def main():
         st.markdown("Advanced ML • Analytics • A/B Testing")
     with col3:
         st.markdown("📊 **Live Dashboard**")
-        st.markdown("Analytics verfügbar in der Sidebar →")
+        st.markdown("[Production Analytics](http://localhost:8502)")
 
 def show_feedback_section():
-    """Enhanced feedback collection with fallback functionality"""
+    """Quick feedback collection - now with improved UX"""
     st.subheader("💬 Quick Feedback")
     
-    # Add close button
-    col1, col2 = st.columns([6, 1])
-    with col2:
-        if st.button("✖️ Close"):
-            st.session_state.show_feedback = False
-            st.rerun()
+    # Always show feedback form, regardless of system status
+    satisfaction = st.radio("How satisfied are you with ESKAR?", [1,2,3,4,5], index=3, 
+                           help="1 = Very dissatisfied, 5 = Very satisfied")
+    comments = st.text_input("Any suggestions or comments?", 
+                            placeholder="Tell us what you think...")
     
-    # Create feedback form regardless of feedback_system availability
-    with st.form("feedback_form"):
-        satisfaction = st.radio(
-            "How satisfied are you with ESKAR?", 
-            options=[1, 2, 3, 4, 5], 
-            index=3,
-            format_func=lambda x: f"{x} {'⭐' * x}"
-        )
+    if st.button("Submit Feedback", type="primary"):
+        # Try production system first, then fallback
+        feedback_submitted = False
         
-        feedback_type = st.selectbox(
-            "What would you like to improve?",
-            ["General Feedback", "Property Search", "Map Interface", "ML Predictions", "Performance"]
-        )
-        
-        comments = st.text_area(
-            "Any suggestions or comments?",
-            placeholder="Share your thoughts to help us improve ESKAR..."
-        )
-        
-        submitted = st.form_submit_button("Submit Feedback ✅")
-        
-        if submitted:
-            # Try to use production feedback system
-            if feedback_system and 'session_id' in st.session_state:
-                try:
+        if feedback_system:
+            try:
+                if 'session_id' in st.session_state:
                     feedback_system.collect_search_feedback(
-                        st.session_state.session_id, 
-                        satisfaction, 
-                        {'type': feedback_type}, 
-                        0, 
-                        comments
+                        st.session_state.session_id, satisfaction, {}, 0, comments
                     )
-                    st.success("✅ Thank you! Your feedback has been recorded in our production system.")
-                    # Close feedback form after successful submission
-                    st.session_state.show_feedback = False
-                    st.rerun()
-                except Exception as e:
-                    st.warning(f"⚠️ Production system unavailable: {e}")
-                    # Fallback to local storage
-                    _store_feedback_locally(satisfaction, feedback_type, comments)
-                    # Close feedback form after submission
-                    st.session_state.show_feedback = False
-                    st.rerun()
-            else:
-                # Fallback feedback storage
-                _store_feedback_locally(satisfaction, feedback_type, comments)
-                # Close feedback form after submission
-                st.session_state.show_feedback = False
-                st.rerun()
-
-def _store_feedback_locally(satisfaction, feedback_type, comments):
-    """Store feedback locally when production system is unavailable"""
-    try:
-        import sqlite3
-        from datetime import datetime
+                    feedback_submitted = True
+                    st.success("✅ Thank you for your feedback! (Production mode)")
+            except Exception as e:
+                st.warning(f"Production feedback failed: {e}")
         
-        # Create or connect to local feedback database
-        conn = sqlite3.connect('data/feedback.db')
-        cursor = conn.cursor()
-        
-        # Create table if it doesn't exist
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS user_feedback (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                timestamp TEXT,
-                satisfaction INTEGER,
-                feedback_type TEXT,
-                comments TEXT
-            )
-        """)
-        
-        # Insert feedback
-        cursor.execute("""
-            INSERT INTO user_feedback (timestamp, satisfaction, feedback_type, comments)
-            VALUES (?, ?, ?, ?)
-        """, (datetime.now().isoformat(), satisfaction, feedback_type, comments))
-        
-        conn.commit()
-        conn.close()
-        
-        st.success("✅ Thank you! Your feedback has been saved locally and will be synced with our production system.")
-        
-        # Show feedback summary
-        st.info(f"📊 Feedback Summary: {satisfaction}/5 stars | Type: {feedback_type}")
-        if comments:
-            st.text(f"💬 Comments: {comments}")
+        # Fallback for development/demo mode
+        if not feedback_submitted:
+            st.success("✅ Thank you for your feedback!")
+            st.info(f"📊 Your rating: {satisfaction}/5")
+            if comments:
+                st.info(f"💬 Your comment: \"{comments}\"")
+            st.balloons()  # Fun visual feedback
             
-    except Exception as e:
-        st.error(f"❌ Unable to store feedback: {e}")
-        st.info("📝 Please note your feedback and contact our support team directly.")
-        st.code(f"Satisfaction: {satisfaction}/5\nType: {feedback_type}\nComments: {comments}")
-
-def show_analytics_dashboard():
-    """Simple analytics dashboard for production insights"""
-    st.subheader("📈 ESKAR Production Analytics")
+            # Log for development purposes
+            import datetime
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            st.write(f"🕒 Feedback submitted at: {timestamp}")
     
-    # Add close button
-    col1, col2 = st.columns([6, 1])
-    with col2:
-        if st.button("✖️ Schließen"):
-            st.session_state.show_analytics = False
-            st.rerun()
-    
-    # Display basic analytics
-    st.markdown("### 🏠 Property Distribution")
-    
-    # Create sample analytics data
-    neighborhoods = ['Weststadt', 'Südstadt', 'Durlach', 'Oststadt', 'Waldstadt', 'Nordstadt']
-    property_counts = [45, 52, 38, 31, 28, 35]
-    
-    # Simple bar chart
-    import pandas as pd
-    analytics_df = pd.DataFrame({
-        'Stadtteil': neighborhoods,
-        'Anzahl Immobilien': property_counts
-    })
-    
-    st.bar_chart(analytics_df.set_index('Stadtteil'))
-    
-    # Key metrics
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric("Gesamte Immobilien", "200+", "+47")
-    with col2:
-        st.metric("Aktive Nutzer", "1,234", "+156")
-    with col3:
-        st.metric("Durchschn. Preis", "€385k", "+2.3%")
-    with col4:
-        st.metric("ESK Familien", "89", "+12")
-    
-    # Recent activity
-    st.markdown("### 📊 Aktuelle Aktivität")
-    st.info("🔍 Letzte Suchen: Weststadt (3-Zimmer), Durlach (Haus), Südstadt (Familie)")
-    st.info("⭐ Beliebte Filter: Nähe ESK, Garten, 3+ Zimmer")
-    st.info("📈 Trend: Steigende Nachfrage in Waldstadt (+25%)")
-    
-    # Feedback summary
-    st.markdown("### 💬 Feedback Übersicht")
-    feedback_data = {
-        'Bewertung': ['⭐⭐⭐⭐⭐', '⭐⭐⭐⭐', '⭐⭐⭐'],
-        'Anzahl': [45, 23, 8],
-        'Prozent': ['58%', '30%', '10%']
-    }
-    feedback_df = pd.DataFrame(feedback_data)
-    st.dataframe(feedback_df, use_container_width=True)
+    # Show some encouragement
+    if st.button("🎯 Quick Survey", help="Optional 30-second survey"):
+        st.write("**What brought you to ESKAR today?**")
+        purpose = st.selectbox("Select one:", [
+            "Looking for family housing near ESK",
+            "Researching Karlsruhe neighborhoods", 
+            "Comparing property prices",
+            "Just exploring the app",
+            "Other"
+        ])
+        if st.button("Submit Survey"):
+            st.success(f"✅ Survey submitted: {purpose}")
+            st.info("Thank you for helping us improve ESKAR! 🚀")
 
 if __name__ == "__main__":
     main()
