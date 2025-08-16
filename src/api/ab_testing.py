@@ -272,7 +272,7 @@ class ESKARABTestingFramework:
         self._update_experiment(experiment)
         self._active_experiments[experiment_id] = experiment
         
-        logger.info(f"▶️ Started experiment: {experiment.name}")
+        logger.info(f"[START] Started experiment: {experiment.name}")
         return True
     
     def assign_variant(self, experiment_id: str, user_session: str) -> Optional[str]:
@@ -518,20 +518,20 @@ class ESKARABTestingFramework:
         # Statistical significance
         if result.statistical_significance:
             if result.winner:
-                recommendations.append(f"✅ Implement variant {result.winner} - statistically significant improvement")
+                recommendations.append(f"[SUCCESS] Implement variant {result.winner} - statistically significant improvement")
             else:
-                recommendations.append("⚠️ Results are significant but no clear winner")
+                recommendations.append("[WARNING] Results are significant but no clear winner")
         else:
             if result.p_value > 0.8:
-                recommendations.append("❌ Consider stopping - very unlikely to find significance")
+                recommendations.append("[STOP] Consider stopping - very unlikely to find significance")
             else:
-                recommendations.append("⏳ Continue collecting data - trending toward significance")
+                recommendations.append("[CONTINUE] Continue collecting data - trending toward significance")
         
         # Effect size consideration
         if abs(result.effect_size) < 0.1:
-            recommendations.append("⚠️ Effect size is small - consider practical significance")
+            recommendations.append("[WARNING] Effect size is small - consider practical significance")
         elif abs(result.effect_size) > 0.5:
-            recommendations.append("🚀 Large effect size detected - high business impact expected")
+            recommendations.append("[HIGH IMPACT] Large effect size detected - high business impact expected")
         
         return recommendations
     

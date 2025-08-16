@@ -164,7 +164,7 @@ class ESKARFeedbackSystem:
                   session.user_type, 0, 0, 0))
             conn.commit()
         
-        logger.info(f"📝 Started user session: {session_id}")
+        logger.info(f"[SESSION] Started user session: {session_id}")
         return session_id
     
     def update_session_activity(self, session_id: str, activity_type: str):
@@ -201,7 +201,7 @@ class ESKARFeedbackSystem:
             ''', (datetime.now().isoformat(), satisfaction_score, session_id))
             conn.commit()
         
-        logger.info(f"✅ Ended user session: {session_id}")
+        logger.info(f"[SUCCESS] Ended user session: {session_id}")
     
     def collect_property_feedback(self, session_id: str, property_id: str, 
                                  rating: int, comments: str = "", 
@@ -248,7 +248,7 @@ class ESKARFeedbackSystem:
         )
         
         self._save_feedback(feedback)
-        logger.info(f"🔍 Collected search feedback: {satisfaction_rating}/5 satisfaction")
+        logger.info(f"[FEEDBACK] Collected search feedback: {satisfaction_rating}/5 satisfaction")
         return feedback_id
     
     def collect_prediction_feedback(self, session_id: str, model_name: str,

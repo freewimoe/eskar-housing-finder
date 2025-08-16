@@ -151,7 +151,7 @@ class ESKARMLEnsemble:
         self.model_performances[task_type] = performances
         self.is_trained = True
         
-        logger.info(f"✅ Ensemble training complete for {task_type}")
+        logger.info(f"[SUCCESS] Ensemble training complete for {task_type}")
         return performances
     
     def _train_random_forest(self, X_train, X_test, y_train, y_test, 
@@ -435,7 +435,7 @@ class ESKARMLEnsemble:
         with open(metadata_path, 'w') as f:
             json.dump(metadata, f, indent=2)
         
-        logger.info(f"✅ Models saved to {save_path}")
+        logger.info(f"[SUCCESS] Models saved to {save_path}")
     
     def load_models(self, load_dir: str, version: str = "latest"):
         """Load trained models from disk"""
@@ -463,7 +463,7 @@ class ESKARMLEnsemble:
                 self.feature_importance = metadata.get('feature_importance', {})
         
         self.is_trained = True
-        logger.info(f"✅ Models loaded from {load_path}")
+        logger.info(f"[SUCCESS] Models loaded from {load_path}")
     
     def get_model_comparison(self, task_type: str) -> pd.DataFrame:
         """Get comparison of model performances"""

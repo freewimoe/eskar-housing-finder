@@ -145,11 +145,11 @@ class ESKARConfig:
             assert -90 <= lat <= 90, "Latitude must be between -90 and 90"
             assert -180 <= lon <= 180, "Longitude must be between -180 and 180"
             
-            self.logger.info("✅ Configuration validation successful")
+            self.logger.info("[SUCCESS] Configuration validation successful")
             return True
             
         except AssertionError as e:
-            self.logger.error(f"❌ Configuration validation failed: {e}")
+            self.logger.error(f"[ERROR] Configuration validation failed: {e}")
             return False
     
     def get_model_save_path(self, model_name: str, version: str = "latest") -> str:

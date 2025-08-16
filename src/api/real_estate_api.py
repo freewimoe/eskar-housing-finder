@@ -85,7 +85,7 @@ class ESKARRealEstateAPI:
     
     def search_properties_karlsruhe(self, filters: Dict) -> List[PropertyData]:
         """Search for properties in Karlsruhe with ESK-specific filters"""
-        logger.info("🔍 Searching for properties in Karlsruhe...")
+        logger.info("[SEARCH] Searching for properties in Karlsruhe...")
         
         # For now, return enhanced synthetic data
         # In production, this would integrate with real APIs
@@ -118,7 +118,7 @@ class ESKARRealEstateAPI:
             )
             properties.append(property_data)
         
-        logger.info(f"✅ Generated {len(properties)} realistic properties")
+        logger.info(f"[SUCCESS] Generated {len(properties)} realistic properties")
         return properties
     
     def _weighted_neighborhood_selection(self, neighborhoods_data: Dict) -> str:
@@ -344,7 +344,7 @@ class ESKARRealEstateAPI:
                 )
                 insights.append(insight)
         
-        logger.info(f"✅ Market analysis complete for {len(insights)} neighborhoods")
+        logger.info(f"[SUCCESS] Market analysis complete for {len(insights)} neighborhoods")
         return insights
     
     def geocode_address(self, address: str) -> Optional[Tuple[float, float]]:

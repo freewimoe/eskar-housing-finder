@@ -84,7 +84,7 @@ class ESKARFeatureEngineer:
         # 6. Derived & Interaction Features (15 features)
         enhanced_df = self._create_derived_features(enhanced_df)
         
-        logger.info(f"✅ Feature engineering complete. Total features: {len(enhanced_df.columns)}")
+        logger.info(f"[SUCCESS] Feature engineering complete. Total features: {len(enhanced_df.columns)}")
         return enhanced_df
     
     def _create_basic_features(self, df: pd.DataFrame) -> pd.DataFrame:

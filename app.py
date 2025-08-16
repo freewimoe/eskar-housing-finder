@@ -577,6 +577,127 @@ def show_market_analytics():
     )
     st.plotly_chart(fig2, use_container_width=True)
 
+def show_interactive_map():
+    """Display interactive map with ESK properties and reference locations"""
+    st.title("🗺️ Interactive Map")
+    st.markdown("### Explore properties with key ESK reference locations")
+    
+    # Load data
+    df = load_housing_data()
+    
+    # Filter controls in sidebar
+    with st.sidebar:
+        st.subheader("🎯 Map Filters")
+        max_distance = st.slider("Max Distance to ESK (km)", 0.5, 15.0, 8.0, 0.5)
+        min_score = st.slider("Min ESK Suitability Score", 20, 100, 60, 5)
+        max_price = st.slider("Max Price (€)", 200000, 2000000, 800000, 50000)
+    
+    # Filter data for map
+    map_df = df[
+        (df['distance_to_esk'] <= max_distance) &
+        (df['esk_suitability_score'] >= min_score) &
+        (df['price'] <= max_price)
+    ]
+    
+    if len(map_df) == 0:
+        st.warning("No properties match your filter criteria. Please adjust the filters.")
+        return
+    
+    # Create map centered between ESK and average property location
+    center_lat = (ESK_LOCATION['lat'] + map_df['lat'].mean()) / 2
+    center_lon = (ESK_LOCATION['lon'] + map_df['lon'].mean()) / 2
+    
+    m = folium.Map(location=[center_lat, center_lon], zoom_start=11)
+    
+    # Add ESK marker (main reference)
+    folium.Marker(
+        [ESK_LOCATION['lat'], ESK_LOCATION['lon']],
+        popup="""<b>🏫 European School Karlsruhe</b><br>
+                Albert-Schweitzer-Str. 1<br>
+                76139 Karlsruhe<br>
+                <em>Your children's school!</em>""",
+        icon=folium.Icon(color='red', icon='graduation-cap', prefix='fa')
+    ).add_to(m)
+    
+    # Add major employers
+    for employer, data in MAJOR_EMPLOYERS.items():
+        folium.Marker(
+            [data['lat'], data['lon']],
+            popup=f"<b>💼 {employer}</b><br><em>Major employer in Karlsruhe region</em>",
+            icon=folium.Icon(color=data['color'], icon='briefcase', prefix='fa')
+        ).add_to(m)
+    
+    # Add property markers with color coding based on ESK score
+    for idx, row in map_df.iterrows():
+        # Color based on ESK suitability score
+        if row['esk_suitability_score'] >= 80:
+            color = 'green'
+            score_category = 'Excellent'
+        elif row['esk_suitability_score'] >= 70:
+            color = 'orange'
+            score_category = 'Good'
+        elif row['esk_suitability_score'] >= 60:
+            color = 'blue'
+            score_category = 'Fair'
+        else:
+            color = 'gray'
+            score_category = 'Basic'
+            
+        # Create detailed popup
+        popup_html = f"""
+        <div style="width: 250px;">
+            <h4>🏠 {row['neighborhood']}</h4>
+            <hr>
+            <p><b>💰 Price:</b> €{row['price']:,}</p>
+            <p><b>🛏️ Bedrooms:</b> {row['bedrooms']}</p>
+            <p><b>📐 Area:</b> {row.get('area_sqm', row.get('sqft', 'N/A'))} m²</p>
+            <p><b>🏫 Distance to ESK:</b> {row['distance_to_esk']:.1f} km</p>
+            <p><b>⭐ ESK Score:</b> {row['esk_suitability_score']:.0f}/100 ({score_category})</p>
+            <p><b>🏠 Type:</b> {row['property_type'].title()}</p>
+            {f"<p><b>🌳 Garden:</b> {'Yes' if row.get('garden', False) else 'No'}</p>" if 'garden' in row else ""}
+        </div>
+        """
+        
+        folium.Marker(
+            [row['lat'], row['lon']],
+            popup=folium.Popup(popup_html, max_width=300),
+            icon=folium.Icon(color=color, icon='home', prefix='fa')
+        ).add_to(m)
+    
+    # Display map
+    st_folium(m, width=800, height=600)
+    
+    # Map legend and statistics
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        **🗺️ Map Legend:**
+        - 🔴 **European School Karlsruhe** - Main reference point
+        - 💼 **Major Employers** - SAP, KIT, Ionos, Research Centers
+        - 🟢 **Excellent Properties** (ESK Score ≥ 80)
+        - 🟠 **Good Properties** (ESK Score ≥ 70)  
+        - 🔵 **Fair Properties** (ESK Score ≥ 60)
+        - ⚫ **Basic Properties** (ESK Score < 60)
+        """)
+    
+    with col2:
+        st.markdown("**📊 Map Statistics:**")
+        col2a, col2b = st.columns(2)
+        with col2a:
+            st.metric("🏠 Properties Shown", len(map_df))
+            st.metric("⭐ Average ESK Score", f"{map_df['esk_suitability_score'].mean():.1f}/100")
+        with col2b:
+            st.metric("💰 Average Price", f"€{map_df['price'].mean():,.0f}")
+            st.metric("🏫 Avg Distance to ESK", f"{map_df['distance_to_esk'].mean():.1f} km")
+    
+    # Highlight best properties
+    st.subheader("🌟 Top Properties on Map")
+    top_map_properties = map_df.nlargest(5, 'esk_suitability_score')[
+        ['neighborhood', 'property_type', 'price', 'bedrooms', 'distance_to_esk', 'esk_suitability_score']
+    ]
+    st.dataframe(top_map_properties, use_container_width=True)
+
 def main():
     """Main application function"""
     # Sidebar navigation
@@ -586,7 +707,7 @@ def main():
         
         page = st.radio(
             "Select Page",
-            ["🏠 Welcome", "🔍 Property Search", "🤖 AI Predictions", "📊 Market Analytics"]
+            ["🏠 Welcome", "🔍 Property Search", "🗺️ Interactive Map", "🤖 AI Predictions", "📊 Market Analytics"]
         )
         
         st.markdown("---")
@@ -607,6 +728,11 @@ def main():
         # Track search activity
         if feedback_system and 'session_id' in st.session_state:
             feedback_system.update_session_activity(st.session_state.session_id, 'search')
+    elif page == "🗺️ Interactive Map":
+        show_interactive_map()
+        # Track map activity
+        if feedback_system and 'session_id' in st.session_state:
+            feedback_system.update_session_activity(st.session_state.session_id, 'view_map')
     elif page == "🤖 AI Predictions":
         show_ml_predictions()
         # Track prediction requests
