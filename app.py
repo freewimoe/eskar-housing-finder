@@ -140,8 +140,8 @@ def create_fallback_feedback_system():
 # Initialize systems
 config, feedback_system, real_estate_api = initialize_production_systems()
 
-# ESK Location and Key Employers (CORRECTED: Albert-Schweitzer-Str. 1, 76139 Karlsruhe)
-ESK_LOCATION = {"lat": 49.0205, "lon": 8.4194, "name": "European School Karlsruhe"}
+# ESK Location and Key Employers (PRECISE: Albert-Schweitzer-Str. 1, 76139 Karlsruhe)
+ESK_LOCATION = {"lat": 49.04637, "lon": 8.44805, "name": "European School Karlsruhe"}
 MAJOR_EMPLOYERS = {
     'SAP Walldorf': {"lat": 49.2933, "lon": 8.6428, "color": "red"},
     'SAP Karlsruhe': {"lat": 49.0233, "lon": 8.4103, "color": "red"},
@@ -340,20 +340,20 @@ def show_welcome_page():
     </div>
     """, unsafe_allow_html=True)
 
-def show_property_search():
-    """Display property search with ESK-optimized filters"""
-    st.title("🔍 Property Search")
-    st.markdown("### Find your perfect home with ESK-optimized filters")
+def show_search_filters():
+    """Display search filters in sidebar"""
+    st.header("🎯 Search Filters")
     
-    # Load data
+    # Load data for filter ranges
     df = load_housing_data()
     
-    # Sidebar filters
-    st.sidebar.header("🎯 Search Filters")
+    # Store filters in session state
+    if 'search_filters' not in st.session_state:
+        st.session_state.search_filters = {}
     
     # Price range
-    price_range = st.sidebar.slider(
-        "💰 Price Range (€)",
+    st.session_state.search_filters['price_range'] = st.slider(
+        "� Price Range (€)",
         min_value=int(df['price'].min()),
         max_value=int(df['price'].max()),
         value=(int(df['price'].min()), int(df['price'].max())),
@@ -362,7 +362,7 @@ def show_property_search():
     )
     
     # ESK distance
-    max_distance = st.sidebar.slider(
+    st.session_state.search_filters['max_distance'] = st.slider(
         "🏫 Max Distance to ESK (km)",
         min_value=0.5,
         max_value=10.0,
@@ -371,34 +371,74 @@ def show_property_search():
     )
     
     # Bedrooms
-    bedrooms = st.sidebar.multiselect(
+    st.session_state.search_filters['bedrooms'] = st.multiselect(
         "🛏️ Bedrooms",
         options=sorted(df['bedrooms'].unique()),
         default=sorted(df['bedrooms'].unique())
     )
     
     # Property type
-    property_types = st.sidebar.multiselect(
+    st.session_state.search_filters['property_types'] = st.multiselect(
         "🏠 Property Type",
         options=['house', 'apartment'],
         default=['house', 'apartment']
     )
     
     # Neighborhoods
-    neighborhoods = st.sidebar.multiselect(
+    st.session_state.search_filters['neighborhoods'] = st.multiselect(
         "🗺️ Neighborhoods",
         options=sorted(df['neighborhood'].unique()),
         default=sorted(df['neighborhood'].unique())
     )
     
     # ESK Score threshold
-    min_esk_score = st.sidebar.slider(
+    st.session_state.search_filters['min_esk_score'] = st.slider(
         "⭐ Minimum ESK Score",
         min_value=1.0,
         max_value=10.0,
         value=6.0,
         step=0.1
     )
+
+def show_map_filters():
+    """Display map filters in sidebar"""
+    st.subheader("🎯 Map Filters")
+    
+    # Store filters in session state
+    if 'map_filters' not in st.session_state:
+        st.session_state.map_filters = {}
+    
+    st.session_state.map_filters['max_distance'] = st.slider(
+        "Max Distance to ESK (km)", 
+        0.5, 15.0, 8.0, 0.5
+    )
+    st.session_state.map_filters['min_score'] = st.slider(
+        "Min ESK Suitability Score", 
+        20, 100, 60, 5
+    )
+    st.session_state.map_filters['max_price'] = st.slider(
+        "Max Price (€)", 
+        200000, 2000000, 800000, 50000
+    )
+
+def show_property_search():
+    """Display property search with ESK-optimized filters"""
+    st.title("🔍 Property Search")
+    st.markdown("### Find your perfect home with ESK-optimized filters")
+    
+    # Load data
+    df = load_housing_data()
+    
+    # Get filters from session state (set by sidebar)
+    filters = st.session_state.get('search_filters', {})
+    
+    # Use default values if filters not set
+    price_range = filters.get('price_range', (int(df['price'].min()), int(df['price'].max())))
+    max_distance = filters.get('max_distance', 5.0)
+    bedrooms = filters.get('bedrooms', sorted(df['bedrooms'].unique()))
+    property_types = filters.get('property_types', ['house', 'apartment'])
+    neighborhoods = filters.get('neighborhoods', sorted(df['neighborhood'].unique()))
+    min_esk_score = filters.get('min_esk_score', 6.0)
     
     # Filter data
     filtered_df = df[
@@ -618,12 +658,13 @@ def show_interactive_map():
     # Load data
     df = load_housing_data()
     
-    # Filter controls in sidebar
-    with st.sidebar:
-        st.subheader("🎯 Map Filters")
-        max_distance = st.slider("Max Distance to ESK (km)", 0.5, 15.0, 8.0, 0.5)
-        min_score = st.slider("Min ESK Suitability Score", 20, 100, 60, 5)
-        max_price = st.slider("Max Price (€)", 200000, 2000000, 800000, 50000)
+    # Get filters from session state (set by sidebar)
+    filters = st.session_state.get('map_filters', {})
+    
+    # Use default values if filters not set
+    max_distance = filters.get('max_distance', 8.0)
+    min_score = filters.get('min_score', 60)
+    max_price = filters.get('max_price', 800000)
     
     # Filter data for map
     map_df = df[
@@ -744,6 +785,15 @@ def main():
         )
         
         st.markdown("---")
+        
+        # Show relevant filters for each page immediately after page selection
+        if page == "🔍 Property Search":
+            show_search_filters()
+        elif page == "🗺️ Interactive Map":
+            show_map_filters()
+        
+        # Move About section to bottom of sidebar
+        st.markdown("---")
         st.markdown("### 🎯 About ESKAR")
         st.markdown("AI-powered housing finder for European School Karlsruhe families")
         
@@ -792,22 +842,56 @@ def main():
         st.markdown("[Production Analytics](http://localhost:8502)")
 
 def show_feedback_section():
-    """Quick feedback collection"""
+    """Quick feedback collection - now with improved UX"""
     st.subheader("💬 Quick Feedback")
     
-    if not feedback_system:
-        st.info("Feedback system will be available in production")
-        return
+    # Always show feedback form, regardless of system status
+    satisfaction = st.radio("How satisfied are you with ESKAR?", [1,2,3,4,5], index=3, 
+                           help="1 = Very dissatisfied, 5 = Very satisfied")
+    comments = st.text_input("Any suggestions or comments?", 
+                            placeholder="Tell us what you think...")
     
-    satisfaction = st.radio("How satisfied are you with ESKAR?", [1,2,3,4,5], index=3)
-    comments = st.text_input("Any suggestions?")
-    
-    if st.button("Submit"):
-        if 'session_id' in st.session_state:
-            feedback_system.collect_search_feedback(
-                st.session_state.session_id, satisfaction, {}, 0, comments
-            )
+    if st.button("Submit Feedback", type="primary"):
+        # Try production system first, then fallback
+        feedback_submitted = False
+        
+        if feedback_system:
+            try:
+                if 'session_id' in st.session_state:
+                    feedback_system.collect_search_feedback(
+                        st.session_state.session_id, satisfaction, {}, 0, comments
+                    )
+                    feedback_submitted = True
+                    st.success("✅ Thank you for your feedback! (Production mode)")
+            except Exception as e:
+                st.warning(f"Production feedback failed: {e}")
+        
+        # Fallback for development/demo mode
+        if not feedback_submitted:
             st.success("✅ Thank you for your feedback!")
+            st.info(f"📊 Your rating: {satisfaction}/5")
+            if comments:
+                st.info(f"💬 Your comment: \"{comments}\"")
+            st.balloons()  # Fun visual feedback
+            
+            # Log for development purposes
+            import datetime
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            st.write(f"🕒 Feedback submitted at: {timestamp}")
+    
+    # Show some encouragement
+    if st.button("🎯 Quick Survey", help="Optional 30-second survey"):
+        st.write("**What brought you to ESKAR today?**")
+        purpose = st.selectbox("Select one:", [
+            "Looking for family housing near ESK",
+            "Researching Karlsruhe neighborhoods", 
+            "Comparing property prices",
+            "Just exploring the app",
+            "Other"
+        ])
+        if st.button("Submit Survey"):
+            st.success(f"✅ Survey submitted: {purpose}")
+            st.info("Thank you for helping us improve ESKAR! 🚀")
 
 if __name__ == "__main__":
     main()

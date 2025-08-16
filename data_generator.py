@@ -20,7 +20,7 @@ class ESKARDataGenerator:
     
     def __init__(self):
         # European School Karlsruhe coordinates (CORRECTED: Albert-Schweitzer-Str. 1, 76139 Karlsruhe)
-        self.esk_location = {"lat": 49.0205, "lon": 8.4194, "name": "European School Karlsruhe"}
+        self.esk_location = {"lat": 49.04637, "lon": 8.44805, "name": "European School Karlsruhe"}
         
         # Major employers for ESK families
         self.major_employers = {
@@ -133,6 +133,73 @@ class ESKARDataGenerator:
                 'public_transport': 8.3,
                 'base_lat': 48.9456,
                 'base_lon': 8.4044
+            },
+            # ADDITIONAL KARLSRUHE NEIGHBORHOODS (for realistic coverage)
+            'Waldstadt': {
+                'current_esk_families': 8,
+                'avg_price_per_sqm': 3300,
+                'commute_time_esk': 15,
+                'safety_rating': 9.0,
+                'international_community': 6.8,
+                'family_friendliness': 8.8,
+                'public_transport': 8.1,
+                'base_lat': 49.0420,
+                'base_lon': 8.4580
+            },
+            'Nordstadt': {
+                'current_esk_families': 11,
+                'avg_price_per_sqm': 3600,
+                'commute_time_esk': 10,
+                'safety_rating': 8.4,
+                'international_community': 7.5,
+                'family_friendliness': 8.1,
+                'public_transport': 9.0,
+                'base_lat': 49.0250,
+                'base_lon': 8.3950
+            },
+            'Nordweststadt': {
+                'current_esk_families': 9,
+                'avg_price_per_sqm': 3500,
+                'commute_time_esk': 12,
+                'safety_rating': 8.6,
+                'international_community': 7.2,
+                'family_friendliness': 8.5,
+                'public_transport': 8.7,
+                'base_lat': 49.0180,
+                'base_lon': 8.3700
+            },
+            'Neureut': {
+                'current_esk_families': 6,
+                'avg_price_per_sqm': 3100,
+                'commute_time_esk': 18,
+                'safety_rating': 8.8,
+                'international_community': 6.5,
+                'family_friendliness': 9.1,
+                'public_transport': 7.9,
+                'base_lat': 49.0580,
+                'base_lon': 8.3950
+            },
+            'Eggenstein': {
+                'current_esk_families': 4,
+                'avg_price_per_sqm': 2950,
+                'commute_time_esk': 20,
+                'safety_rating': 8.9,
+                'international_community': 6.3,
+                'family_friendliness': 8.7,
+                'public_transport': 7.6,
+                'base_lat': 49.0830,
+                'base_lon': 8.4050
+            },
+            'Blankenloch': {
+                'current_esk_families': 5,
+                'avg_price_per_sqm': 3000,
+                'commute_time_esk': 22,
+                'safety_rating': 8.7,
+                'international_community': 6.4,
+                'family_friendliness': 8.9,
+                'public_transport': 7.8,
+                'base_lat': 49.0900,
+                'base_lon': 8.4200
             }
         }
         
@@ -229,8 +296,25 @@ class ESKARDataGenerator:
         for i in range(n_samples):
             # Select neighborhood based on ESK family distribution
             neighborhood_names = list(self.neighborhoods.keys())
-            # Updated weights for 9 neighborhoods (sum = 1.0)
-            neighborhood_weights = [0.30, 0.22, 0.15, 0.12, 0.08, 0.05, 0.04, 0.02, 0.02]  # Based on ESK preferences + new areas
+            # Updated weights for 15 neighborhoods (sum = 1.0) - Matching actual neighborhood order
+            # Higher weights for popular ESK areas, moderate for established areas, lower for newer/distant areas
+            neighborhood_weights = [
+                0.197,  # Weststadt (still popular, close to ESK)
+                0.158,  # Südstadt (popular, central)
+                0.119,  # Innenstadt-West (central, convenient)
+                0.099,  # Durlach (established, good transport)
+                0.069,  # Oststadt (good area)
+                0.050,  # Mühlburg (affordable option)
+                0.040,  # Stutensee (expanded region)
+                0.010,  # Bruchsal (furthest option)
+                0.020,  # Ettlingen (southern option)
+                0.040,  # Waldstadt (northern, quiet)
+                0.079,  # Nordstadt (central-north, good access)
+                0.059,  # Nordweststadt (decent residential)
+                0.030,  # Neureut (northern suburb)
+                0.015,  # Eggenstein (near research centers)
+                0.015   # Blankenloch (northern area)
+            ]
             
             neighborhood = np.random.choice(neighborhood_names, p=neighborhood_weights)
             neighborhood_info = self.neighborhoods[neighborhood]
