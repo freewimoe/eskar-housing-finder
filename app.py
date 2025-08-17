@@ -748,6 +748,10 @@ def main():
     if st.sidebar.button("💬 Give Feedback"):
         st.session_state.show_feedback = True
     
+    # Add analytics page with persistent state
+    if st.sidebar.button("📈 Production Analytics"):
+        st.session_state.show_analytics = True
+    
     if st.session_state.get('show_feedback', False):
         show_feedback_section()
     
@@ -766,8 +770,7 @@ def main():
         st.markdown("Advanced ML • Analytics • A/B Testing")
     with col3:
         st.markdown("📊 **Live Dashboard**")
-        if st.button("📈 Analytics"):
-            st.session_state.show_analytics = True
+        st.markdown("Analytics verfügbar in der Sidebar →")
 
 def show_feedback_section():
     """Enhanced feedback collection with fallback functionality"""
