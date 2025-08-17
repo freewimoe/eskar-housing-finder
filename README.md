@@ -6,11 +6,16 @@
 
 ESKAR (European School Karlsruhe Housing Finder) is a **production-ready machine learning application** that helps international families find optimal housing in Karlsruhe, Germany. The system leverages advanced ML pipelines, real-time analytics, and sophisticated data modeling to provide ESK-optimized property recommendations.
 
-**Live Application:** [https://eskar-housing-finder-ux-improvements.streamlit.app/](https://eskar-housing-finder-ux-improvements.streamlit.app/)
+**Live Application:** [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
+
+![ESKAR Homepage](docs/images/eskar-homepage.png)
+![Interactive Map Features](docs/images/eskar-map-features.png)
+![Property Search Interface](docs/images/eskar-property-search.png)
+![ML Price Predictions](docs/images/eskar-ml-predictions.png)
 
 ## **Dataset Content**
 
-The ESKAR dataset consists of synthetically generated but realistic Karlsruhe housing data, engineered specifically for European School Karlsruhe families. The dataset represents **200+ properties** across 16 major Karlsruhe neighborhoods, optimized for international families working at major local employers (SAP, KIT, Ionos, Research Centers).
+The ESKAR dataset consists of synthetically generated but realistic Karlsruhe housing data, engineered specifically for European School Karlsruhe families. The dataset represents **200+ properties** across **16 major Karlsruhe neighborhoods**, optimized for international families working at major local employers (SAP, KIT, Ionos, Research Centers).
 
 ### **🗺️ Interactive Map Features** 
 **One of the project's standout features is the interactive Folium map integration that provides:**
@@ -22,19 +27,9 @@ The ESKAR dataset consists of synthetically generated but realistic Karlsruhe ho
 
 ### **Property Features**
 
-**Live Application:** [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
-
-![ESKAR Homepage](docs/images/eskar-homepage.png)
-
-## **Dataset Content**
-
-The ESKAR dataset consists of synthetically generated but realistic Karlsruhe housing data, engineered specifically for European School Karlsruhe families. The dataset represents **200+ properties** across 6 major Karlsruhe neighborhoods, optimized for international families working at major local employers (SAP, KIT, Ionos, Research Centers).
-
-### **Property Features**
-
 |Variable|Meaning|Range/Values|
 |:----|:----|:----|
-|neighborhood|Karlsruhe district|Weststadt, Südstadt, Innenstadt-West, Durlach, Oststadt, Mühlburg|
+|neighborhood|Karlsruhe district|Weststadt, Südstadt, Innenstadt-West, Durlach, Oststadt, Mühlburg, Nordstadt, Südweststadt, Oberreut, Knielingen, Wolfartsweier, Stupferich, Palmbach, Neureut, Daxlanden, Graben-Neudorf|
 |property_type|Type of property|house, apartment|
 |bedrooms|Number of bedrooms|2-5|
 |sqft|Living space in square meters|50-300|
@@ -170,8 +165,8 @@ The ESKAR application features a multi-page Streamlit interface designed for int
 
 ## **Deployment**
 
-### **Streamlit Cloud**
-* The App live link is: [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
+### **Streamlit Cloud (Primary)**
+* **Live Application:** [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
 * The project was deployed to Streamlit Cloud using the following steps:
 
 1. **Repository Setup**
@@ -195,6 +190,43 @@ The ESKAR application features a multi-page Streamlit interface designed for int
    - Validate all features work in production environment
    - Test ML model predictions and data loading
    - Verify analytics and feedback systems functionality
+
+### **Heroku Deployment (Alternative)**
+* **Lightweight Version:** For 500MB memory limit compliance
+* **Files Required:**
+  - `app_heroku.py` - Optimized lightweight application
+  - `requirements-heroku.txt` - Minimal dependencies (18 packages vs 48)
+  - `Procfile-heroku` - Heroku-specific configuration
+
+**Heroku Deployment Steps:**
+```bash
+# 1. Create Heroku app
+heroku create eskar-housing-finder
+
+# 2. Set Python runtime
+echo "python-3.12.0" > runtime.txt
+
+# 3. Use lightweight requirements
+cp requirements-heroku.txt requirements.txt
+
+# 4. Use Heroku Procfile
+cp Procfile-heroku Procfile
+
+# 5. Deploy
+git add .
+git commit -m "Heroku deployment setup"
+git push heroku main
+
+# 6. Open application
+heroku open
+```
+
+**Heroku Optimization Features:**
+- ✅ **Reduced dependencies:** LightGBM only (no XGBoost, CatBoost)
+- ✅ **Smaller dataset:** 100 properties vs 200
+- ✅ **Simplified ML pipeline:** Single model instead of ensemble
+- ✅ **Memory efficient:** Optimized for <500MB usage
+- ✅ **Fast startup:** Reduced load time for Heroku dynos
 
 ### **Local Development**
 ```bash
