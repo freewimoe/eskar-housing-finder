@@ -4,6 +4,10 @@
 
 **Code Institute Portfolio Project 5 - Advanced Full Stack Development**
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://eskar-housing-finder.streamlit.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue)](https://github.com/freewimoe/eskar-housing-finder)
+[![Python](https://img.shields.io/badge/Python-3.12-green)](https://www.python.org/)
+
 ESKAR (European School Karlsruhe Housing Finder) is a **production-ready machine learning application** that helps international families find optimal housing in Karlsruhe, Germany. The system leverages advanced ML pipelines, real-time analytics, and sophisticated data modeling to provide ESK-optimized property recommendations.
 
 **Live Application:** [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
@@ -57,6 +61,8 @@ The client challenges include:
 * **BR1** - The client is interested in discovering how property attributes correlate with ESK family satisfaction and housing success. Therefore, the client expects data visualizations showing the relationships between property features and ESK suitability scores.
 
 * **BR2** - The client is interested in predicting property prices for any house in Karlsruhe, with special emphasis on properties suitable for ESK families, to make informed purchasing/rental decisions.
+
+* **BR3** - The client requires a user-friendly interface that allows for interactive exploration of properties, including an interactive map with ESK proximity visualization and a feedback mechanism to continuously improve the system based on user experiences.
 
 ## **Hypotheses and how to validate**
 
@@ -296,7 +302,7 @@ streamlit run app_production_dashboard.py --server.port=8502
 ## **Acknowledgements**
 
 * **Code Institute Mentors** for technical guidance and project scope refinement throughout development
-* **European School Karlsruhe Community** for providing domain expertise and real-world user feedback
+* **European School Karlsruhe Community** for providing domain expertise and real-world user feedback  
 * **Karlsruhe International Families** for participating in user testing and providing valuable insights into housing search challenges
 * **Technical Communities** including Streamlit, scikit-learn, and Plotly communities for excellent documentation and support resources
 ---
