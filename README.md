@@ -1,6 +1,16 @@
-# ![CI logo]## Dataset Content
+# ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
-The ESKAR dataset consists of synthetically generated but realistic Karlsruhe housing data, engineered specifically for European School Karlsruhe families. The dataset represents **200+ properties** across 6 major Karlsruhe neighborhoods, optimized for international families working at major local employers (SAP, KIT, Ionos, Research Centers).
+# **ESKAR Housing Finder**
+
+**Code Institute Portfolio Project 5 - Advanced Full Stack Development**
+
+ESKAR (European School Karlsruhe Housing Finder) is a **production-ready machine learning application** that helps international families find optimal housing in Karlsruhe, Germany. The system leverages advanced ML pipelines, real-time analytics, and sophisticated data modeling to provide ESK-optimized property recommendations.
+
+**Live Application:** [https://eskar-housing-finder-ux-improvements.streamlit.app/](https://eskar-housing-finder-ux-improvements.streamlit.app/)
+
+## **Dataset Content**
+
+The ESKAR dataset consists of synthetically generated but realistic Karlsruhe housing data, engineered specifically for European School Karlsruhe families. The dataset represents **200+ properties** across 16 major Karlsruhe neighborhoods, optimized for international families working at major local employers (SAP, KIT, Ionos, Research Centers).
 
 ### **🗺️ Interactive Map Features** 
 **One of the project's standout features is the interactive Folium map integration that provides:**
@@ -10,13 +20,7 @@ The ESKAR dataset consists of synthetically generated but realistic Karlsruhe ho
 - **Dynamic filtering** by price, features, and neighborhood
 - **Geographical insights** for optimal housing selection
 
-### **Property Features**s://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
-
-# **ESKAR Housing Finder**
-
-**Code Institute Portfolio Project 5 - Advanced Full Stack Development**
-
-ESKAR (European School Karlsruhe Housing Finder) is a **production-ready machine learning application** that helps international families find optimal housing in Karlsruhe, Germany. The system leverages advanced ML pipelines, real-time analytics, and sophisticated data modeling to provide ESK-optimized property recommendations.
+### **Property Features**
 
 **Live Application:** [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
 

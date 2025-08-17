@@ -700,8 +700,8 @@ def show_interactive_map():
         - 🟠 Excellent Properties (ESK Score ≥ 80)
         - 🟢 Good Properties (ESK Score ≥ 70)
         - 🔵 Fair Properties (ESK Score ≥ 60)
-        - ⚫ Basic Properties (ESK Score < 60)
-        - 📍 Reference Points
+        - ⚪ Basic Properties (ESK Score < 60)
+        - ⚫📍 Reference Points
         """)
     
     with col2:
@@ -734,14 +734,6 @@ def main():
         )
         
         st.markdown("---")
-        st.markdown("### 🎯 About ESKAR")
-        st.markdown("AI-powered housing finder for European School Karlsruhe families")
-        
-        st.markdown("**Key Features:**")
-        st.markdown("• 🏫 ESK-optimized search")
-        st.markdown("• 🤖 ML price predictions")  
-        st.markdown("• 📊 Market insights")
-        st.markdown("• 🗺️ Karlsruhe expertise")
     
     # Route to selected page with enhanced features
     if page == "🏠 Welcome":
@@ -771,6 +763,18 @@ def main():
     # Add analytics page with persistent state
     if st.sidebar.button("📈 Production Analytics"):
         st.session_state.show_analytics = True
+    
+    # About ESKAR section at bottom of sidebar
+    with st.sidebar:
+        st.markdown("---")
+        st.markdown("### 🎯 About ESKAR")
+        st.markdown("AI-powered housing finder for European School Karlsruhe families")
+        
+        st.markdown("**Key Features:**")
+        st.markdown("• 🏫 ESK-optimized search")
+        st.markdown("• 🤖 ML price predictions")  
+        st.markdown("• 📊 Market insights")
+        st.markdown("• 🗺️ Karlsruhe expertise")
     
     if st.session_state.get('show_feedback', False):
         show_feedback_section()
