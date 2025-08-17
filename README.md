@@ -4,48 +4,13 @@
 
 **Code Institute Portfolio Project 5 - Advanced Full Stack Development**
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://eskar-housing-finder.streamlit.app/)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue)](https://github.com/freewimoe/eskar-housing-finder)
-[![Python](https://img.shields.io/badge/Python-3.12-green)](https://www.python.org/)
-
 ESKAR (European School Karlsruhe Housing Finder) is a **production-ready machine learning application** that helps international families find optimal housing in Karlsruhe, Germany. The system leverages advanced ML pipelines, real-time analytics, and sophisticated data modeling to provide ESK-optimized property recommendations.
 
-**Live Application:** [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
-
-![ESKAR Homepage](docs/images/eskar-homepage.png)
-![Interactive Map Features](docs/images/eskar-map-features.png)
-![Property Search Interface](docs/images/eskar-property-search.png)
-![ML Price Predictions](docs/images/eskar-ml-predictions.png)
+**Live Application:** [https://eskar-housing-finder-ux-improvements.streamlit.app/](https://eskar-housing-finder-ux-improvements.streamlit.app/)
 
 ## **Dataset Content**
 
-The ESKAR dataset consists of **synthetically generated but market-research-based** Karlsruhe housing data, specifically engineered for European School Karlsruhe families. The dataset represents **300+ properties** across **16 major Karlsruhe neighborhoods**, with realistic characteristics derived from actual 2025 market analysis.
-
-### **🔍 Data Sources & Generation Process**
-
-**Primary Data Source: Synthetic Generation with Real-World Foundation**
-- **Base Data:** Synthetically generated using the ESKARDataGenerator class
-- **Market Research Foundation:** Property pricing based on actual 2025 Karlsruhe real estate market analysis
-- **Geographic Accuracy:** Real coordinates and neighborhood boundaries for all 16 Karlsruhe districts
-- **Price Modeling:** Per-square-meter prices derived from current market reports (€2,800-€4,800/sqm)
-- **ESK-Specific Features:** Family suitability scores based on actual ESK community feedback and location analysis
-
-**Dataset Generation Methodology:**
-1. **Neighborhood Selection:** 16 actual Karlsruhe districts with real demographic and geographic data
-2. **Price Modeling:** Market-researched price ranges per neighborhood with realistic variance
-3. **Feature Engineering:** 20+ calculated features including ESK proximity, family amenities, and transport scores
-4. **Quality Assurance:** Statistical validation to ensure realistic property distributions and price correlations
-
-**Data Architecture:**
-- **CSV Storage:** 300+ properties in `data/housing_data.csv` with 20 engineered features
-- **API Framework:** Production-ready architecture prepared for real estate API integration (ImmoScout24, OpenData)
-- **Hybrid Approach:** Fallback system from API → CSV → Synthetic generator for robust data availability
-
-**Rationale for Synthetic Data:**
-- **Academic Compliance:** Appropriate for Code Institute Portfolio Project demonstrating ML capabilities
-- **Legal Considerations:** Avoids web scraping and commercial API licensing constraints
-- **Quality Control:** Ensures consistent data quality and availability for reliable ML model training
-- **ESK Optimization:** Custom feature engineering specifically for international school families
+The ESKAR dataset consists of synthetically generated but realistic Karlsruhe housing data, engineered specifically for European School Karlsruhe families. The dataset represents **200+ properties** across 16 major Karlsruhe neighborhoods, optimized for international families working at major local employers (SAP, KIT, Ionos, Research Centers).
 
 ### **🗺️ Interactive Map Features** 
 **One of the project's standout features is the interactive Folium map integration that provides:**
@@ -57,20 +22,30 @@ The ESKAR dataset consists of **synthetically generated but market-research-base
 
 ### **Property Features**
 
-|Variable|Meaning|Data Source|Range/Values|
-|:----|:----|:----|:----|
-|neighborhood|Karlsruhe district|Real geographic boundaries|Weststadt, Südstadt, Innenstadt-West, Durlach, Oststadt, Mühlburg, Nordstadt, Südweststadt, Oberreut, Knielingen, Wolfartsweier, Stupferich, Palmbach, Neureut, Daxlanden, Graben-Neudorf|
-|property_type|Type of property|Market distribution modeling|house, apartment|
-|bedrooms|Number of bedrooms|Family housing research|2-5|
-|sqft|Living space in square meters|Market-based size distributions|60-300|
-|garden|Garden/balcony availability|Feature probability modeling|True/False|
-|garage|Garage availability|Neighborhood-specific probabilities|True/False|
-|price|Property price in Euros|2025 market research per neighborhood|€280,000 - €1,200,000|
-|distance_to_esk|Distance to European School Karlsruhe|Calculated from real ESK coordinates|0.5 - 8.0 km|
-|esk_suitability_score|ESK family optimization score|Algorithm based on proximity + features|0-100 (weighted calculation)|
-|safety_score|Neighborhood safety rating|Based on official Karlsruhe statistics|7.0 - 9.5|
-|current_esk_families|Number of ESK families in area|Estimated from community research|0-8 per property vicinity|
-|features|Property amenities|Market-typical feature combinations|garden, garage, balcony, renovated, energy_efficient|
+**Live Application:** [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
+
+![ESKAR Homepage](docs/images/eskar-homepage.png)
+
+## **Dataset Content**
+
+The ESKAR dataset consists of synthetically generated but realistic Karlsruhe housing data, engineered specifically for European School Karlsruhe families. The dataset represents **200+ properties** across 6 major Karlsruhe neighborhoods, optimized for international families working at major local employers (SAP, KIT, Ionos, Research Centers).
+
+### **Property Features**
+
+|Variable|Meaning|Range/Values|
+|:----|:----|:----|
+|neighborhood|Karlsruhe district|Weststadt, Südstadt, Innenstadt-West, Durlach, Oststadt, Mühlburg|
+|property_type|Type of property|house, apartment|
+|bedrooms|Number of bedrooms|2-5|
+|sqft|Living space in square meters|50-300|
+|garden|Garden/balcony availability|True/False|
+|garage|Garage availability|True/False|
+|price|Property price in Euros|300,000 - 1,200,000|
+|distance_to_esk|Distance to European School Karlsruhe (km)|0.5 - 8.0|
+|esk_suitability_score|ESK family optimization score (0-100)|Based on proximity, features, community|
+|safety_score|Neighborhood safety rating|7.0 - 9.5|
+|current_esk_families|Number of ESK families in area|0-8 per property area|
+|features|Property amenities|garden, garage, balcony, renovated, energy_efficient|
 
 ## **Business Requirements**
 
@@ -87,8 +62,6 @@ The client challenges include:
 * **BR1** - The client is interested in discovering how property attributes correlate with ESK family satisfaction and housing success. Therefore, the client expects data visualizations showing the relationships between property features and ESK suitability scores.
 
 * **BR2** - The client is interested in predicting property prices for any house in Karlsruhe, with special emphasis on properties suitable for ESK families, to make informed purchasing/rental decisions.
-
-* **BR3** - The client requires a user-friendly interface that allows for interactive exploration of properties, including an interactive map with ESK proximity visualization and a feedback mechanism to continuously improve the system based on user experiences.
 
 ## **Hypotheses and how to validate**
 
@@ -197,8 +170,8 @@ The ESKAR application features a multi-page Streamlit interface designed for int
 
 ## **Deployment**
 
-### **Streamlit Cloud (Primary)**
-* **Live Application:** [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
+### **Streamlit Cloud**
+* The App live link is: [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
 * The project was deployed to Streamlit Cloud using the following steps:
 
 1. **Repository Setup**
@@ -222,43 +195,6 @@ The ESKAR application features a multi-page Streamlit interface designed for int
    - Validate all features work in production environment
    - Test ML model predictions and data loading
    - Verify analytics and feedback systems functionality
-
-### **Heroku Deployment (Alternative)**
-* **Lightweight Version:** For 500MB memory limit compliance
-* **Files Required:**
-  - `app_heroku.py` - Optimized lightweight application
-  - `requirements-heroku.txt` - Minimal dependencies (18 packages vs 48)
-  - `Procfile-heroku` - Heroku-specific configuration
-
-**Heroku Deployment Steps:**
-```bash
-# 1. Create Heroku app
-heroku create eskar-housing-finder
-
-# 2. Set Python runtime
-echo "python-3.12.0" > runtime.txt
-
-# 3. Use lightweight requirements
-cp requirements-heroku.txt requirements.txt
-
-# 4. Use Heroku Procfile
-cp Procfile-heroku Procfile
-
-# 5. Deploy
-git add .
-git commit -m "Heroku deployment setup"
-git push heroku main
-
-# 6. Open application
-heroku open
-```
-
-**Heroku Optimization Features:**
-- ✅ **Reduced dependencies:** LightGBM only (no XGBoost, CatBoost)
-- ✅ **Smaller dataset:** 100 properties vs 200
-- ✅ **Simplified ML pipeline:** Single model instead of ensemble
-- ✅ **Memory efficient:** Optimized for <500MB usage
-- ✅ **Fast startup:** Reduced load time for Heroku dynos
 
 ### **Local Development**
 ```bash
@@ -328,39 +264,9 @@ streamlit run app_production_dashboard.py --server.port=8502
 ## **Acknowledgements**
 
 * **Code Institute Mentors** for technical guidance and project scope refinement throughout development
-* **European School Karlsruhe Community** for providing domain expertise and real-world user feedback  
+* **European School Karlsruhe Community** for providing domain expertise and real-world user feedback
 * **Karlsruhe International Families** for participating in user testing and providing valuable insights into housing search challenges
 * **Technical Communities** including Streamlit, scikit-learn, and Plotly communities for excellent documentation and support resources
-
----
-
-## **Testing & Quality Assurance**
-
-### **Manual Edit Recovery Documentation**
-
-During the final quality assurance phase (August 17, 2025), manual editing introduced temporary syntax errors that were successfully resolved using git-based recovery protocols:
-
-#### **Issue Resolution Timeline:**
-1. **Detection**: Automated PEP8 validation identified 4 critical syntax errors
-2. **Recovery**: Git stash and rollback to stable commit restored functionality  
-3. **Documentation**: Created comprehensive recovery documentation
-4. **Validation**: Full functionality verified through syntax checking
-
-#### **Final Quality Metrics:**
-- **PEP8 Compliance**: 814 issues → 90% improvement achieved  
-- **Critical Errors**: 0 (all syntax errors resolved)
-- **Functionality**: ✅ 100% operational - all features working
-- **Production Status**: ✅ Successfully deployed on Streamlit Cloud
-- **Recovery Time**: < 10 minutes using version control
-
-#### **Code Quality Approach:**
-- **Priority 1**: Functional excellence - no broken features
-- **Priority 2**: Professional development practices
-- **Priority 3**: Academic requirements compliance
-- **Recovery Protocol**: Git-based rollback for critical issues
-
-**Quality Assurance Result**: ✅ **SUBMISSION READY** - Project maintains professional standards with robust recovery protocols in place.
-
 ---
 
 **Built with ❤️ for the European School Karlsruhe Community by Friedrich-Wilhelm Möller**
