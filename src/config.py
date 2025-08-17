@@ -61,7 +61,7 @@ class DataConfig:
     
     def __post_init__(self):
         if self.esk_coordinates is None:
-            self.esk_coordinates = {"lat": 49.0134, "lon": 8.4044}
+            self.esk_coordinates = {"lat": 49.04642435194822, "lon": 8.44610144968972}
 
 @dataclass
 class APIConfig:
