@@ -19,20 +19,17 @@ class ESKARDataGenerator:
     """Generates ESK-specific housing data for Karlsruhe"""
     
     def __init__(self):
-        # European School Karlsruhe coordinates (CORRECTED: Albert-Schweitzer-Str. 1, 76139 Karlsruhe)
-        self.esk_location = {"lat": 49.04637, "lon": 8.44805, "name": "European School Karlsruhe"}
+        # European School Karlsruhe coordinates - Albert-Schweitzer-Str. 1, 76139 Karlsruhe
+        self.esk_location = {"lat": 49.04642435194822, "lon": 8.44610144968972, "name": "European School Karlsruhe"}
         
-        # Major employers for ESK families (updated with realistic Karlsruhe employers)
+        # Major employers for ESK families
         self.major_employers = {
-            'sap_se_walldorf': {"lat": 49.2933, "lon": 8.6428, "name": "SAP SE Walldorf"},
-            'sap_labs_karlsruhe': {"lat": 49.0233, "lon": 8.4103, "name": "SAP Labs Karlsruhe"},
-            'ionos_se': {"lat": 49.0089, "lon": 8.3858, "name": "Ionos SE"},
-            'kit_campus_south': {"lat": 49.0069, "lon": 8.4037, "name": "KIT Campus Süd"},
-            'kit_campus_north': {"lat": 49.0943, "lon": 8.4347, "name": "KIT Campus Nord"},
-            'forschungszentrum': {"lat": 49.0930, "lon": 8.4279, "name": "Forschungszentrum Karlsruhe"},
-            'enbw_karlsruhe': {"lat": 49.0158, "lon": 8.4044, "name": "EnBW Karlsruhe"},
-            'dm_drogerie': {"lat": 49.0125, "lon": 8.4200, "name": "dm-drogerie markt"},
-            'siemens_karlsruhe': {"lat": 49.0200, "lon": 8.3800, "name": "Siemens Karlsruhe"}
+            'sap_walldorf': {"lat": 49.2933, "lon": 8.6428, "name": "SAP Walldorf"},
+            'sap_karlsruhe': {"lat": 49.0233, "lon": 8.4103, "name": "SAP Karlsruhe"},
+            'ionos': {"lat": 49.0089, "lon": 8.3858, "name": "Ionos Karlsruhe"},
+            'kit_campus_south': {"lat": 49.0069, "lon": 8.4037, "name": "KIT Campus South"},
+            'kit_campus_north': {"lat": 49.0943, "lon": 8.4347, "name": "KIT Campus North"},
+            'research_center': {"lat": 49.0930, "lon": 8.4279, "name": "Research Center Karlsruhe"}
         }
         
         # ESK family preferred neighborhoods (based on real data)
@@ -103,106 +100,117 @@ class ESKARDataGenerator:
                 'base_lat': 49.0169,
                 'base_lon': 8.3637
             },
-            # NEW EXPANDED REGION: Stutensee-Bruchsal Area
+            # REGIONAL EXPANSION: Stutensee-Bruchsal-Durlach Region (Aug 2025)
             'Stutensee': {
-                'current_esk_families': 18,
+                'current_esk_families': 8,
                 'avg_price_per_sqm': 3200,
-                'commute_time_esk': 22,
+                'commute_time_esk': 35,
                 'safety_rating': 9.1,
                 'international_community': 6.5,
-                'family_friendliness': 9.3,
-                'public_transport': 7.2,
-                'base_lat': 49.0911,
-                'base_lon': 8.4530
+                'family_friendliness': 9.5,
+                'public_transport': 6.8,
+                'base_lat': 49.0600,
+                'base_lon': 8.4850
             },
             'Bruchsal': {
-                'current_esk_families': 14,
-                'avg_price_per_sqm': 2900,
-                'commute_time_esk': 35,
-                'safety_rating': 8.7,
-                'international_community': 6.2,
-                'family_friendliness': 8.8,
-                'public_transport': 8.9,
-                'base_lat': 49.1240,
-                'base_lon': 8.5980
-            },
-            'Ettlingen': {
-                'current_esk_families': 16,
-                'avg_price_per_sqm': 3500,
-                'commute_time_esk': 28,
-                'safety_rating': 8.9,
-                'international_community': 7.1,
-                'family_friendliness': 9.0,
-                'public_transport': 8.3,
-                'base_lat': 48.9456,
-                'base_lon': 8.4044
-            },
-            # ADDITIONAL KARLSRUHE NEIGHBORHOODS (for realistic coverage)
-            'Waldstadt': {
-                'current_esk_families': 8,
-                'avg_price_per_sqm': 3300,
-                'commute_time_esk': 15,
-                'safety_rating': 9.0,
-                'international_community': 6.8,
-                'family_friendliness': 8.8,
-                'public_transport': 8.1,
-                'base_lat': 49.0420,
-                'base_lon': 8.4580
-            },
-            'Nordstadt': {
-                'current_esk_families': 11,
-                'avg_price_per_sqm': 3600,
-                'commute_time_esk': 10,
-                'safety_rating': 8.4,
-                'international_community': 7.5,
-                'family_friendliness': 8.1,
-                'public_transport': 9.0,
-                'base_lat': 49.0250,
-                'base_lon': 8.3950
-            },
-            'Nordweststadt': {
-                'current_esk_families': 9,
-                'avg_price_per_sqm': 3500,
-                'commute_time_esk': 12,
-                'safety_rating': 8.6,
-                'international_community': 7.2,
-                'family_friendliness': 8.5,
-                'public_transport': 8.7,
-                'base_lat': 49.0180,
-                'base_lon': 8.3700
-            },
-            'Neureut': {
-                'current_esk_families': 6,
-                'avg_price_per_sqm': 3100,
-                'commute_time_esk': 18,
-                'safety_rating': 8.8,
-                'international_community': 6.5,
-                'family_friendliness': 9.1,
-                'public_transport': 7.9,
-                'base_lat': 49.0580,
-                'base_lon': 8.3950
-            },
-            'Eggenstein': {
-                'current_esk_families': 4,
-                'avg_price_per_sqm': 2950,
-                'commute_time_esk': 20,
-                'safety_rating': 8.9,
-                'international_community': 6.3,
-                'family_friendliness': 8.7,
-                'public_transport': 7.6,
-                'base_lat': 49.0830,
-                'base_lon': 8.4050
-            },
-            'Blankenloch': {
                 'current_esk_families': 5,
-                'avg_price_per_sqm': 3000,
+                'avg_price_per_sqm': 2900,
+                'commute_time_esk': 45,
+                'safety_rating': 8.9,
+                'international_community': 6.0,
+                'family_friendliness': 9.3,
+                'public_transport': 6.5,
+                'base_lat': 49.1242,
+                'base_lon': 8.5976
+            },
+            'Weingarten (Baden)': {
+                'current_esk_families': 3,
+                'avg_price_per_sqm': 2800,
+                'commute_time_esk': 40,
+                'safety_rating': 9.0,
+                'international_community': 5.8,
+                'family_friendliness': 9.4,
+                'public_transport': 6.2,
+                'base_lat': 49.0547,
+                'base_lon': 8.5331
+            },
+            # ADDITIONAL SAP/KIT RELEVANT REGIONS (Aug 2025)
+            'Waldstadt': {
+                'current_esk_families': 18,
+                'avg_price_per_sqm': 3500,
                 'commute_time_esk': 22,
                 'safety_rating': 8.7,
-                'international_community': 6.4,
+                'international_community': 7.8,
                 'family_friendliness': 8.9,
-                'public_transport': 7.8,
-                'base_lat': 49.0900,
-                'base_lon': 8.4200
+                'public_transport': 8.2,
+                'base_lat': 49.0300,
+                'base_lon': 8.4150
+            },
+            'Nordstadt': {
+                'current_esk_families': 16,
+                'avg_price_per_sqm': 3300,
+                'commute_time_esk': 18,
+                'safety_rating': 8.4,
+                'international_community': 7.5,
+                'family_friendliness': 8.6,
+                'public_transport': 8.5,
+                'base_lat': 49.0250,
+                'base_lon': 8.3900
+            },
+            'Nordweststadt': {
+                'current_esk_families': 14,
+                'avg_price_per_sqm': 3200,
+                'commute_time_esk': 25,
+                'safety_rating': 8.5,
+                'international_community': 7.2,
+                'family_friendliness': 8.8,
+                'public_transport': 7.9,
+                'base_lat': 49.0400,
+                'base_lon': 8.3700
+            },
+            'Eggenstein-Leopoldshafen': {
+                'current_esk_families': 12,
+                'avg_price_per_sqm': 3100,
+                'commute_time_esk': 30,
+                'safety_rating': 9.2,
+                'international_community': 7.8,
+                'family_friendliness': 9.1,
+                'public_transport': 7.2,
+                'base_lat': 49.0833,
+                'base_lon': 8.4000
+            },
+            'Pfinztal': {
+                'current_esk_families': 9,
+                'avg_price_per_sqm': 2950,
+                'commute_time_esk': 35,
+                'safety_rating': 9.0,
+                'international_community': 6.8,
+                'family_friendliness': 9.3,
+                'public_transport': 6.9,
+                'base_lat': 48.9750,
+                'base_lon': 8.5200
+            },
+            'Grötzingen': {
+                'current_esk_families': 7,
+                'avg_price_per_sqm': 2850,
+                'commute_time_esk': 38,
+                'safety_rating': 8.8,
+                'international_community': 6.5,
+                'family_friendliness': 9.2,
+                'public_transport': 6.8,
+                'base_lat': 48.9900,
+                'base_lon': 8.5100
+            },
+            'Graben-Neudorf': {
+                'current_esk_families': 4,
+                'avg_price_per_sqm': 2750,
+                'commute_time_esk': 42,
+                'safety_rating': 8.9,
+                'international_community': 6.2,
+                'family_friendliness': 9.4,
+                'public_transport': 6.5,
+                'base_lat': 49.1500,
+                'base_lon': 8.5800
             }
         }
         
@@ -299,25 +307,7 @@ class ESKARDataGenerator:
         for i in range(n_samples):
             # Select neighborhood based on ESK family distribution
             neighborhood_names = list(self.neighborhoods.keys())
-            # Updated weights for 15 neighborhoods (sum = 1.0) - Matching actual neighborhood order
-            # Higher weights for popular ESK areas, moderate for established areas, lower for newer/distant areas
-            neighborhood_weights = [
-                0.197,  # Weststadt (still popular, close to ESK)
-                0.158,  # Südstadt (popular, central)
-                0.119,  # Innenstadt-West (central, convenient)
-                0.099,  # Durlach (established, good transport)
-                0.069,  # Oststadt (good area)
-                0.050,  # Mühlburg (affordable option)
-                0.040,  # Stutensee (expanded region)
-                0.010,  # Bruchsal (furthest option)
-                0.020,  # Ettlingen (southern option)
-                0.040,  # Waldstadt (northern, quiet)
-                0.079,  # Nordstadt (central-north, good access)
-                0.059,  # Nordweststadt (decent residential)
-                0.030,  # Neureut (northern suburb)
-                0.015,  # Eggenstein (near research centers)
-                0.015   # Blankenloch (northern area)
-            ]
+            neighborhood_weights = [0.35, 0.25, 0.15, 0.12, 0.08, 0.05]  # Based on ESK preferences
             
             neighborhood = np.random.choice(neighborhood_names, p=neighborhood_weights)
             neighborhood_info = self.neighborhoods[neighborhood]
