@@ -111,12 +111,23 @@ config, feedback_system, real_estate_api = initialize_production_systems()
 # Main ESK reference point - Albert-Schweitzer-Str. 1, 76139 Karlsruhe
 ESK_LOCATION = {"lat": 49.04642435194822, "lon": 8.44610144968972, "name": "European School Karlsruhe"}
 MAJOR_EMPLOYERS = {
-    'SAP Walldorf': {"lat": 49.2933, "lon": 8.6428, "color": "red"},
-    'SAP Karlsruhe': {"lat": 49.0233, "lon": 8.4103, "color": "red"},
-    'Ionos Karlsruhe': {"lat": 49.0089, "lon": 8.3858, "color": "green"},
-    'KIT Campus South': {"lat": 49.0069, "lon": 8.4037, "color": "blue"},
-    'KIT Campus North': {"lat": 49.0943, "lon": 8.4347, "color": "blue"},
-    'Research Center': {"lat": 49.0930, "lon": 8.4279, "color": "purple"}
+    'SAP Walldorf': {"lat": 49.2933, "lon": 8.6428, "color": "darkred"},
+    'SAP Karlsruhe': {"lat": 49.0233, "lon": 8.4103, "color": "darkred"},
+    'Ionos Karlsruhe': {"lat": 49.0089, "lon": 8.3858, "color": "orange"},
+    'KIT Campus South': {"lat": 49.0069, "lon": 8.4037, "color": "orange"},
+    'KIT Campus North': {"lat": 49.0943, "lon": 8.4347, "color": "orange"},
+    'Research Center': {"lat": 49.0930, "lon": 8.4279, "color": "orange"}
+}
+
+# Reference Points for Karlsruhe navigation
+REFERENCE_POINTS = {
+    'Schloss Karlsruhe': {"lat": 49.01421999560518, "lon": 8.403960063870352},
+    'Karlsruhe Hauptbahnhof': {"lat": 48.99479092959184, "lon": 8.406023225540062},
+    'Messe Karlsruhe (dm-Arena)': {"lat": 48.98048379498876, "lon": 8.327621317976728},
+    'Flughafen Karlsruhe/Baden-Baden': {"lat": 48.785522624587735, "lon": 8.082932722464315},
+    'Bruchsal Bahnhof': {"lat": 49.125106524646846, "lon": 8.592074339192727},
+    'Wiesloch-Walldorf Bahnhof': {"lat": 49.29321074149488, "lon": 8.667798999769051},
+    'Ettlingen Stadt Bahnhof': {"lat": 48.939569655889116, "lon": 8.411787558748287}
 }
 
 @st.cache_data
@@ -622,7 +633,7 @@ def show_interactive_map():
         icon=folium.Icon(color='red', icon='graduation-cap', prefix='fa')
     ).add_to(m)
     
-    # Add major employers
+    # Add major employers with briefcase icon
     for employer, data in MAJOR_EMPLOYERS.items():
         folium.Marker(
             [data['lat'], data['lon']],
@@ -630,20 +641,28 @@ def show_interactive_map():
             icon=folium.Icon(color=data['color'], icon='briefcase', prefix='fa')
         ).add_to(m)
     
+    # Add reference points with black markers
+    for ref_point, data in REFERENCE_POINTS.items():
+        folium.Marker(
+            [data['lat'], data['lon']],
+            popup=f"<b>📍 {ref_point}</b><br><em>Reference location</em>",
+            icon=folium.Icon(color='black', icon='map-marker', prefix='fa')
+        ).add_to(m)
+    
     # Add property markers with color coding based on ESK score
     for idx, row in map_df.iterrows():
-        # Color based on ESK suitability score
+        # Color based on ESK suitability score - Updated color scheme
         if row['esk_suitability_score'] >= 80:
-            color = 'green'
+            color = 'yellow'  # Excellent Properties (like stars)
             score_category = 'Excellent'
         elif row['esk_suitability_score'] >= 70:
-            color = 'orange'
+            color = 'lightgreen'  # Good Properties
             score_category = 'Good'
         elif row['esk_suitability_score'] >= 60:
-            color = 'blue'
+            color = 'lightblue'  # Fair Properties
             score_category = 'Fair'
         else:
-            color = 'gray'
+            color = 'lightgray'  # Basic Properties
             score_category = 'Basic'
             
         # Create detailed popup
@@ -677,11 +696,12 @@ def show_interactive_map():
         st.markdown("""
         **🗺️ Map Legend:**
         - 🔴 **European School Karlsruhe** - Main reference point
-        - 💼 **Major Employers** - SAP, KIT, Ionos, Research Centers
-        - 🟢 **Excellent Properties** (ESK Score ≥ 80)
-        - 🟠 **Good Properties** (ESK Score ≥ 70)  
-        - 🔵 **Fair Properties** (ESK Score ≥ 60)
-        - ⚫ **Basic Properties** (ESK Score < 60)
+        - 💼 **Major Employers** - SAP (darkred), KIT/Ionos/Research (orange), with briefcase icon
+        - ⭐ **Excellent Properties** (ESK Score ≥ 80) - Yellow (Top Properties)
+        - � **Good Properties** (ESK Score ≥ 70) - Light Green
+        - 🔵 **Fair Properties** (ESK Score ≥ 60) - Light Blue
+        - ⚫ **Basic Properties** (ESK Score < 60) - Light Grey
+        - 📍 **Reference Points** - Black markers (Schloss, Bahnhöfe, etc.)
         """)
     
     with col2:
