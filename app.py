@@ -802,7 +802,7 @@ def main():
         
         page = st.radio(
             "Select Page",
-            ["🏠 Welcome", "🔍 Property Search", "🗺️ Interactive Map", "🤖 AI Predictions", "📊 Market Analytics"]
+            ["🏠 Welcome", "🔍 Property Search", "🗺️ Interactive Map", "🤖 AI Predictions", "📊 Market Analytics", "💬 Feedback"]
         )
         
         st.markdown("---")
@@ -844,9 +844,12 @@ def main():
             feedback_system.update_session_activity(st.session_state.session_id, 'request_prediction')
     elif page == "📊 Market Analytics":
         show_market_analytics()
+    elif page == "💬 Feedback":
+        show_feedback_section()
     
-    # Add feedback page
-    if st.sidebar.button("💬 Give Feedback"):
+    # Add footer feedback button (less prominent but always available)
+    st.sidebar.markdown("---")
+    if st.sidebar.button("💬 Quick Feedback", help="Give us your thoughts!"):
         show_feedback_section()
     
     # Footer with production info
@@ -860,7 +863,7 @@ def main():
         st.markdown("Advanced ML • Analytics • A/B Testing")
     with col3:
         st.markdown("📊 **Live Dashboard**")
-        st.markdown("[Production Analytics](http://localhost:8502)")
+        st.markdown("[Production Analytics](#)", help="Analytics dashboard would be available in full production deployment")
 
 def show_feedback_section():
     """Quick feedback collection - now with improved UX"""
