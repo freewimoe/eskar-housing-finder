@@ -19,7 +19,33 @@ ESKAR (European School Karlsruhe Housing Finder) is a **production-ready machine
 
 ## **Dataset Content**
 
-The ESKAR dataset consists of synthetically generated but realistic Karlsruhe housing data, engineered specifically for European School Karlsruhe families. The dataset represents **200+ properties** across **16 major Karlsruhe neighborhoods**, optimized for international families working at major local employers (SAP, KIT, Ionos, Research Centers).
+The ESKAR dataset consists of **synthetically generated but market-research-based** Karlsruhe housing data, specifically engineered for European School Karlsruhe families. The dataset represents **300+ properties** across **16 major Karlsruhe neighborhoods**, with realistic characteristics derived from actual 2025 market analysis.
+
+### **🔍 Data Sources & Generation Process**
+
+**Primary Data Source: Synthetic Generation with Real-World Foundation**
+- **Base Data:** Synthetically generated using the ESKARDataGenerator class
+- **Market Research Foundation:** Property pricing based on actual 2025 Karlsruhe real estate market analysis
+- **Geographic Accuracy:** Real coordinates and neighborhood boundaries for all 16 Karlsruhe districts
+- **Price Modeling:** Per-square-meter prices derived from current market reports (€2,800-€4,800/sqm)
+- **ESK-Specific Features:** Family suitability scores based on actual ESK community feedback and location analysis
+
+**Dataset Generation Methodology:**
+1. **Neighborhood Selection:** 16 actual Karlsruhe districts with real demographic and geographic data
+2. **Price Modeling:** Market-researched price ranges per neighborhood with realistic variance
+3. **Feature Engineering:** 20+ calculated features including ESK proximity, family amenities, and transport scores
+4. **Quality Assurance:** Statistical validation to ensure realistic property distributions and price correlations
+
+**Data Architecture:**
+- **CSV Storage:** 300+ properties in `data/housing_data.csv` with 20 engineered features
+- **API Framework:** Production-ready architecture prepared for real estate API integration (ImmoScout24, OpenData)
+- **Hybrid Approach:** Fallback system from API → CSV → Synthetic generator for robust data availability
+
+**Rationale for Synthetic Data:**
+- **Academic Compliance:** Appropriate for Code Institute Portfolio Project demonstrating ML capabilities
+- **Legal Considerations:** Avoids web scraping and commercial API licensing constraints
+- **Quality Control:** Ensures consistent data quality and availability for reliable ML model training
+- **ESK Optimization:** Custom feature engineering specifically for international school families
 
 ### **🗺️ Interactive Map Features** 
 **One of the project's standout features is the interactive Folium map integration that provides:**
@@ -31,20 +57,20 @@ The ESKAR dataset consists of synthetically generated but realistic Karlsruhe ho
 
 ### **Property Features**
 
-|Variable|Meaning|Range/Values|
-|:----|:----|:----|
-|neighborhood|Karlsruhe district|Weststadt, Südstadt, Innenstadt-West, Durlach, Oststadt, Mühlburg, Nordstadt, Südweststadt, Oberreut, Knielingen, Wolfartsweier, Stupferich, Palmbach, Neureut, Daxlanden, Graben-Neudorf|
-|property_type|Type of property|house, apartment|
-|bedrooms|Number of bedrooms|2-5|
-|sqft|Living space in square meters|50-300|
-|garden|Garden/balcony availability|True/False|
-|garage|Garage availability|True/False|
-|price|Property price in Euros|300,000 - 1,200,000|
-|distance_to_esk|Distance to European School Karlsruhe (km)|0.5 - 8.0|
-|esk_suitability_score|ESK family optimization score (0-100)|Based on proximity, features, community|
-|safety_score|Neighborhood safety rating|7.0 - 9.5|
-|current_esk_families|Number of ESK families in area|0-8 per property area|
-|features|Property amenities|garden, garage, balcony, renovated, energy_efficient|
+|Variable|Meaning|Data Source|Range/Values|
+|:----|:----|:----|:----|
+|neighborhood|Karlsruhe district|Real geographic boundaries|Weststadt, Südstadt, Innenstadt-West, Durlach, Oststadt, Mühlburg, Nordstadt, Südweststadt, Oberreut, Knielingen, Wolfartsweier, Stupferich, Palmbach, Neureut, Daxlanden, Graben-Neudorf|
+|property_type|Type of property|Market distribution modeling|house, apartment|
+|bedrooms|Number of bedrooms|Family housing research|2-5|
+|sqft|Living space in square meters|Market-based size distributions|60-300|
+|garden|Garden/balcony availability|Feature probability modeling|True/False|
+|garage|Garage availability|Neighborhood-specific probabilities|True/False|
+|price|Property price in Euros|2025 market research per neighborhood|€280,000 - €1,200,000|
+|distance_to_esk|Distance to European School Karlsruhe|Calculated from real ESK coordinates|0.5 - 8.0 km|
+|esk_suitability_score|ESK family optimization score|Algorithm based on proximity + features|0-100 (weighted calculation)|
+|safety_score|Neighborhood safety rating|Based on official Karlsruhe statistics|7.0 - 9.5|
+|current_esk_families|Number of ESK families in area|Estimated from community research|0-8 per property vicinity|
+|features|Property amenities|Market-typical feature combinations|garden, garage, balcony, renovated, energy_efficient|
 
 ## **Business Requirements**
 
