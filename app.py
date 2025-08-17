@@ -651,9 +651,9 @@ def show_interactive_map():
     
     # Add property markers with color coding based on ESK score
     for idx, row in map_df.iterrows():
-        # Color based on ESK suitability score - Updated color scheme
+        # Color based on ESK suitability score - Folium compatible colors only
         if row['esk_suitability_score'] >= 80:
-            color = 'yellow'  # Excellent Properties (like stars)
+            color = 'orange'  # Excellent Properties (closest to star-like in Folium)
             score_category = 'Excellent'
         elif row['esk_suitability_score'] >= 70:
             color = 'lightgreen'  # Good Properties
@@ -695,13 +695,13 @@ def show_interactive_map():
     with col1:
         st.markdown("""
         **🗺️ Map Legend:**
-        - 🔴 **European School Karlsruhe** - Main reference point
-        - 💼 **Major Employers** - SAP (darkred), KIT/Ionos/Research (orange), with briefcase icon
-        - ⭐ **Excellent Properties** (ESK Score ≥ 80) - Yellow (Top Properties)
-        - � **Good Properties** (ESK Score ≥ 70) - Light Green
-        - 🔵 **Fair Properties** (ESK Score ≥ 60) - Light Blue
-        - ⚫ **Basic Properties** (ESK Score < 60) - Light Grey
-        - 📍 **Reference Points** - Black markers (Schloss, Bahnhöfe, etc.)
+        - 🔴 European School Karlsruhe
+        - 💼 Major Employers - SAP / KIT/Ionos/JRC
+        - 🟠 Excellent Properties (ESK Score ≥ 80)
+        - 🟢 Good Properties (ESK Score ≥ 70)
+        - 🔵 Fair Properties (ESK Score ≥ 60)
+        - ⚫ Basic Properties (ESK Score < 60)
+        - 📍 Reference Points
         """)
     
     with col2:
