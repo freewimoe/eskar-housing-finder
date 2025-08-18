@@ -5,7 +5,7 @@ Unit tests for core application functionality including:
 - Real Estate API operations
 - User Feedback system
 - Data Generation and validation
-- ESK-specific calculations
+- ESK - specific calculations
 
 Run all tests with: python -m pytest tests/ -v
 """
