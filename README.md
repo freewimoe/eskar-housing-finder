@@ -1,25 +1,6 @@
-# ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# ![CI logo]## Dataset Content
 
-# **ESKAR Housing Finder**
-
-**Code Institute Portfolio Project 5 - Advanced Full Stack Development**
-
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://eskar-housing-finder.streamlit.app/)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue)](https://github.com/freewimoe/eskar-housing-finder)
-[![Python](https://img.shields.io/badge/Python-3.12-green)](https://www.python.org/)
-
-ESKAR (European School Karlsruhe Housing Finder) is a **production-ready machine learning application** that helps international families find optimal housing in Karlsruhe, Germany. The system leverages advanced ML pipelines, real-time analytics, and sophisticated data modeling to provide ESK-optimized property recommendations.
-
-**Live Application:** [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
-
-![ESKAR Homepage](docs/images/eskar-homepage.png)
-![Interactive Map Features](docs/images/eskar-map-features.png)
-![Property Search Interface](docs/images/eskar-property-search.png)
-![ML Price Predictions](docs/images/eskar-ml-predictions.png)
-
-## **Dataset Content**
-
-The ESKAR dataset consists of synthetically generated but realistic Karlsruhe housing data, engineered specifically for European School Karlsruhe families. The dataset represents **200+ properties** across **16 major Karlsruhe neighborhoods**, optimized for international families working at major local employers (SAP, KIT, Ionos, Research Centers).
+The ESKAR dataset consists of synthetically generated but realistic Karlsruhe housing data, engineered specifically for European School Karlsruhe families. The dataset represents **200+ properties** across 6 major Karlsruhe neighborhoods, optimized for international families working at major local employers (SAP, KIT, Ionos, Research Centers).
 
 ### **🗺️ Interactive Map Features** 
 **One of the project's standout features is the interactive Folium map integration that provides:**
@@ -29,11 +10,27 @@ The ESKAR dataset consists of synthetically generated but realistic Karlsruhe ho
 - **Dynamic filtering** by price, features, and neighborhood
 - **Geographical insights** for optimal housing selection
 
+### **Property Features**s://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+
+# **ESKAR Housing Finder**
+
+**Code Institute Portfolio Project 5 - Advanced Full Stack Development**
+
+ESKAR (European School Karlsruhe Housing Finder) is a **production-ready machine learning application** that helps international families find optimal housing in Karlsruhe, Germany. The system leverages advanced ML pipelines, real-time analytics, and sophisticated data modeling to provide ESK-optimized property recommendations.
+
+**Live Application:** [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
+
+![ESKAR Homepage](docs/images/eskar-homepage.png)
+
+## **Dataset Content**
+
+The ESKAR dataset consists of synthetically generated but realistic Karlsruhe housing data, engineered specifically for European School Karlsruhe families. The dataset represents **200+ properties** across 6 major Karlsruhe neighborhoods, optimized for international families working at major local employers (SAP, KIT, Ionos, Research Centers).
+
 ### **Property Features**
 
 |Variable|Meaning|Range/Values|
 |:----|:----|:----|
-|neighborhood|Karlsruhe district|Weststadt, Südstadt, Innenstadt-West, Durlach, Oststadt, Mühlburg, Nordstadt, Südweststadt, Oberreut, Knielingen, Wolfartsweier, Stupferich, Palmbach, Neureut, Daxlanden, Graben-Neudorf|
+|neighborhood|Karlsruhe district|Weststadt, Südstadt, Innenstadt-West, Durlach, Oststadt, Mühlburg|
 |property_type|Type of property|house, apartment|
 |bedrooms|Number of bedrooms|2-5|
 |sqft|Living space in square meters|50-300|
@@ -61,8 +58,6 @@ The client challenges include:
 * **BR1** - The client is interested in discovering how property attributes correlate with ESK family satisfaction and housing success. Therefore, the client expects data visualizations showing the relationships between property features and ESK suitability scores.
 
 * **BR2** - The client is interested in predicting property prices for any house in Karlsruhe, with special emphasis on properties suitable for ESK families, to make informed purchasing/rental decisions.
-
-* **BR3** - The client requires a user-friendly interface that allows for interactive exploration of properties, including an interactive map with ESK proximity visualization and a feedback mechanism to continuously improve the system based on user experiences.
 
 ## **Hypotheses and how to validate**
 
@@ -169,10 +164,133 @@ The ESKAR application features a multi-page Streamlit interface designed for int
 
 * **Unicode Logging Warnings:** The application displays Unicode encoding warnings in Windows terminal logs when using emoji characters in logging messages. This is a cosmetic issue related to Windows console encoding and does not affect application functionality. The warnings occur during normal operation and can be safely ignored.
 
+## **Testing**
+
+### **Manual Testing**
+
+#### **User Story Testing**
+
+The ESKAR Housing Finder dashboard was manually tested using user stories as a basis for determining success. All core functionality was validated through systematic testing of user interactions and expected outcomes.
+
+**Epic 1: Data Visualization and Analysis**
+
+**User Story 1.1: Housing Market Overview**
+*As a ESK family, I want to view comprehensive housing market data so that I can understand the current market conditions in Karlsruhe.*
+
+| Feature | Action | Expected Result | Actual Result |
+|---------|--------|----------------|---------------|
+| Welcome Page | Navigate to homepage | Display total properties, neighborhoods, and key statistics | ✅ Functions as intended |
+| Market Analytics | Click "📊 Market Analytics" in sidebar | Show comprehensive market overview with charts | ✅ Functions as intended |
+| Property Distribution | View neighborhood breakdown | Display all 16 Karlsruhe neighborhoods with ESK family counts | ✅ Functions as intended |
+
+**User Story 1.2: Interactive Property Visualization**
+*As a house hunter, I want to see properties on an interactive map so that I can visualize locations and distances.*
+
+| Feature | Action | Expected Result | Actual Result |
+|---------|--------|----------------|---------------|
+| Interactive Map | Navigate to "🗺️ Interactive Map" | Properties displayed as markers with ESK location clearly marked | ✅ Functions as intended |
+| Property Markers | Click on property marker | Display property details popup with price, features, ESK distance | ✅ Functions as intended |
+| Color Coding | View map markers | Properties color-coded by ESK suitability score | ✅ Functions as intended |
+| ESK Reference Point | Locate ESK on map | School clearly marked with distinctive icon and info popup | ✅ Functions as intended |
+
+**Epic 2: Machine Learning Pipeline**
+
+**User Story 2.1: AI-Powered Property Predictions**
+*As a ESK family, I want to get AI-powered suitability scores for properties so that I can quickly identify the best options.*
+
+| Feature | Action | Expected Result | Actual Result |
+|---------|--------|----------------|---------------|
+| AI Predictions Page | Navigate to "🤖 AI Predictions" | ML-powered price estimation tool displayed | ✅ Functions as intended |
+| Property Input Form | Enter property characteristics | All input widgets respond correctly (sliders, dropdowns, checkboxes) | ✅ Functions as intended |
+| Price Prediction | Click "Predict Property Price" | Real-time ML prediction with confidence intervals | ✅ Functions as intended |
+| ESK Suitability Score | View property results | Each property shows 0-100 ESK suitability score with explanation | ✅ Functions as intended |
+
+**Epic 3: Property Search and Discovery**
+
+**User Story 3.1: Advanced Property Search**
+*As a house hunter, I want to search properties with multiple filters so that I can narrow down options efficiently.*
+
+| Feature | Action | Expected Result | Actual Result |
+|---------|--------|----------------|---------------|
+| Property Search | Navigate to "🔍 Property Search" | Advanced filter options displayed in sidebar | ✅ Functions as intended |
+| Price Range Filter | Adjust price slider | Results update dynamically to show properties in range | ✅ Functions as intended |
+| Distance Filter | Set ESK distance radius | Filter properties by proximity to European School Karlsruhe | ✅ Functions as intended |
+| Feature Filters | Select garden, garage, bedrooms | Results filtered by selected property amenities | ✅ Functions as intended |
+| Property Results | View filtered results | Properties displayed with key details and ESK metrics | ✅ Functions as intended |
+
+**Epic 4: Analytics and Insights**
+
+**User Story 4.1: Market Trends and Neighborhood Analysis**
+*As a newcomer to Karlsruhe, I want to learn about different neighborhoods so that I can choose the best area.*
+
+| Feature | Action | Expected Result | Actual Result |
+|---------|--------|----------------|---------------|
+| Market Analytics | Access analytics dashboard | Comprehensive market trends and neighborhood insights | ✅ Functions as intended |
+| Neighborhood Profiles | View area breakdowns | Average prices, commute times, and ESK family populations | ✅ Functions as intended |
+| Correlation Analysis | View feature relationships | Charts showing price vs. distance, features vs. suitability | ✅ Functions as intended |
+| ESK Community Data | View family distribution | Current ESK family counts per neighborhood | ✅ Functions as intended |
+
+**Epic 5: User Experience and Feedback**
+
+**User Story 5.1: Feedback System**
+*As an app user, I want to provide feedback on properties and predictions so that the system can improve.*
+
+| Feature | Action | Expected Result | Actual Result |
+|---------|--------|----------------|---------------|
+| Feedback Form | Access feedback section | Simple rating system (1-5 stars) with comment field | ✅ Functions as intended |
+| Feedback Submission | Submit rating and comments | Success message with feedback confirmation | ✅ Functions as intended |
+| Fallback System | Test without production backend | Local feedback storage works as backup | ✅ Functions as intended |
+| Feedback Analytics | View feedback summary | Production dashboard shows aggregated user feedback | ✅ Functions as intended |
+
+**User Story 5.2: Mobile Responsiveness**
+*As a mobile user, I want to access the app on my smartphone so that I can search properties on the go.*
+
+| Feature | Action | Expected Result | Actual Result |
+|---------|--------|----------------|---------------|
+| Mobile Layout | Access app on mobile device | Responsive design adapts to smaller screens | ✅ Functions as intended |
+| Touch Interface | Interact with map and filters | Touch-friendly interface elements work smoothly | ✅ Functions as intended |
+| Performance | Load app on mobile network | Fast loading times and optimized performance | ✅ Functions as intended |
+
+### **Code Validation**
+
+#### **Python Code Validation**
+
+All Python code in the ESKAR Housing Finder project was validated using the **Code Institute PEP8 Python Linter** to ensure compliance with Python coding standards.
+
+**Validation Results:**
+
+- **app.py**: ✅ Validated - No critical errors
+- **data_generator.py**: ✅ Validated - No critical errors  
+- **src/api/real_estate_api.py**: ✅ Validated - No critical errors
+- **src/api/user_feedback.py**: ✅ Validated - No critical errors
+- **src/api/production_config.py**: ✅ Validated - No critical errors
+- **test_regions.py**: ✅ Validated - No critical errors
+- **test_feedback.py**: ✅ Validated - No critical errors
+
+**Note on Line Length Warnings:**
+- Some files contained warnings for "line too long" (>79 characters)
+- These were primarily related to long strings in Streamlit display text and data dictionaries
+- Warnings were addressed where possible without affecting code readability
+- Remaining warnings do not impact functionality and follow common practices for Streamlit applications
+
+**PEP8 Compliance Improvements:**
+- Added proper docstrings to all functions and classes
+- Implemented consistent naming conventions
+- Ensured proper spacing around operators and after commas
+- Applied appropriate indentation throughout codebase
+- Removed unused imports and variables
+
+**Validation Tools Used:**
+- [Code Institute PEP8 Python Linter](https://pep8ci.herokuapp.com/)
+- Local flake8 configuration for development
+- VS Code Python formatting extensions
+
+The codebase maintains high standards of Python code quality while prioritizing functionality and readability for this machine learning application.
+
 ## **Deployment**
 
-### **Streamlit Cloud (Primary)**
-* **Live Application:** [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
+### **Streamlit Cloud**
+* The App live link is: [https://eskar-housing-finder.streamlit.app/](https://eskar-housing-finder.streamlit.app/)
 * The project was deployed to Streamlit Cloud using the following steps:
 
 1. **Repository Setup**
@@ -196,43 +314,6 @@ The ESKAR application features a multi-page Streamlit interface designed for int
    - Validate all features work in production environment
    - Test ML model predictions and data loading
    - Verify analytics and feedback systems functionality
-
-### **Heroku Deployment (Alternative)**
-* **Lightweight Version:** For 500MB memory limit compliance
-* **Files Required:**
-  - `app_heroku.py` - Optimized lightweight application
-  - `requirements-heroku.txt` - Minimal dependencies (18 packages vs 48)
-  - `Procfile-heroku` - Heroku-specific configuration
-
-**Heroku Deployment Steps:**
-```bash
-# 1. Create Heroku app
-heroku create eskar-housing-finder
-
-# 2. Set Python runtime
-echo "python-3.12.0" > runtime.txt
-
-# 3. Use lightweight requirements
-cp requirements-heroku.txt requirements.txt
-
-# 4. Use Heroku Procfile
-cp Procfile-heroku Procfile
-
-# 5. Deploy
-git add .
-git commit -m "Heroku deployment setup"
-git push heroku main
-
-# 6. Open application
-heroku open
-```
-
-**Heroku Optimization Features:**
-- ✅ **Reduced dependencies:** LightGBM only (no XGBoost, CatBoost)
-- ✅ **Smaller dataset:** 100 properties vs 200
-- ✅ **Simplified ML pipeline:** Single model instead of ensemble
-- ✅ **Memory efficient:** Optimized for <500MB usage
-- ✅ **Fast startup:** Reduced load time for Heroku dynos
 
 ### **Local Development**
 ```bash
@@ -302,7 +383,7 @@ streamlit run app_production_dashboard.py --server.port=8502
 ## **Acknowledgements**
 
 * **Code Institute Mentors** for technical guidance and project scope refinement throughout development
-* **European School Karlsruhe Community** for providing domain expertise and real-world user feedback  
+* **European School Karlsruhe Community** for providing domain expertise and real-world user feedback
 * **Karlsruhe International Families** for participating in user testing and providing valuable insights into housing search challenges
 * **Technical Communities** including Streamlit, scikit-learn, and Plotly communities for excellent documentation and support resources
 ---
