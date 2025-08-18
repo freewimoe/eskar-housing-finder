@@ -64,7 +64,7 @@ st.set_page_config(
 # Define robust, cross-platform paths
 BASE_PATH = Path(__file__).resolve().parent
 DATA_PATH = BASE_PATH / "data"
-CSV_PATH = DATA_PATH / "eskar_housing_data.csv"
+CSV_PATH = DATA_PATH / "housing_data.csv"  # Consistent filename
 DB_PATH = DATA_PATH / "feedback.db"
 
 # Ensure data directory exists
@@ -118,8 +118,8 @@ def initialize_production_systems():
 config, feedback_system, real_estate_api = initialize_production_systems()
 
 # ESK Location and Key Employers
-# Main ESK reference point - Albert-Schweitzer-Str. 1, 76139 Karlsruhe
-ESK_LOCATION = {"lat": 49.04642435194822, "lon": 8.44610144968972, "name": "European School Karlsruhe"}
+# Main ESK reference point - Albert-Schweitzer-Str. 1, 76139 Karlsruhe (KORREKTE Koordinaten)
+ESK_LOCATION = {"lat": 49.0464700608647, "lon": 8.44612290974462, "name": "European School Karlsruhe"}
 MAJOR_EMPLOYERS = {
     'SAP Walldorf': {"lat": 49.2933, "lon": 8.6428, "color": "darkred"},
     'SAP Karlsruhe': {"lat": 49.0233, "lon": 8.4103, "color": "darkred"},
@@ -274,17 +274,6 @@ def get_enhanced_ml_predictions(df, target_features):
     accuracy = r2_score(y_test, model.predict(X_test))
     
     return predictions, {'simple_rf': {'accuracy': accuracy}}, X
-    try:
-        # Try to load real ESK data
-        df = pd.read_csv(CSV_PATH)
-        return df
-    except FileNotFoundError:
-        # Generate fresh ESK data using our generator
-        st.info("🏫 Generating fresh ESK housing data...")
-        generator = ESKARDataGenerator()
-        df = generator.generate_housing_dataset(n_samples=300)
-        generator.save_dataset(df)
-        return df
 
 def show_welcome_page():
     """Display welcome page with ESK information"""
@@ -331,14 +320,10 @@ def show_welcome_page():
     </div>
     """, unsafe_allow_html=True)
 
-def show_property_search(df=None):
+def show_property_search(df):
     """Display property search with ESK-optimized filters"""
     st.title("🔍 Property Search")
     st.markdown("### Find your perfect home with ESK-optimized filters")
-    
-    # Load data if not provided
-    if df is None:
-        df = load_housing_data()
     
     # Sidebar filters
     st.sidebar.header("🎯 Search Filters")
@@ -445,14 +430,10 @@ def show_property_search(df=None):
         use_container_width=True
     )
 
-def show_ml_predictions(df=None):
+def show_ml_predictions(df):
     """Show ML price prediction interface"""
     st.title("🤖 AI Price Prediction")
     st.markdown("### Get instant property value estimates using machine learning")
-    
-    # Load data if not provided
-    if df is None:
-        df = load_housing_data()
     
     col1, col2 = st.columns([1, 1])
     
@@ -539,14 +520,10 @@ def train_price_model(df):
     
     return model, accuracy
 
-def show_market_analytics(df=None):
+def show_market_analytics(df):
     """Display market analytics and insights"""
     st.title("📊 Market Analytics")
     st.markdown("### Karlsruhe housing market insights for ESK families")
-    
-    # Load data if not provided
-    if df is None:
-        df = load_housing_data()
     
     # Market overview
     col1, col2, col3, col4 = st.columns(4)
@@ -605,14 +582,10 @@ def show_market_analytics(df=None):
     )
     st.plotly_chart(fig2, use_container_width=True)
 
-def show_interactive_map(df=None):
+def show_interactive_map(df):
     """Display interactive map with ESK properties and reference locations"""
     st.title("🗺️ Interactive Map")
     st.markdown("### Explore properties with key ESK reference locations")
-    
-    # Load data if not provided
-    if df is None:
-        df = load_housing_data()
     
     # Filter controls in sidebar
     with st.sidebar:

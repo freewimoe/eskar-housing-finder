@@ -494,7 +494,7 @@ class ESKARRealEstateAPI:
         
         for prop in properties:
             # Calculate distance to ESK (Albert-Schweitzer-Str. 1, 76139 Karlsruhe)
-            esk_lat, esk_lon = 49.04642435194822, 8.44610144968972
+            esk_lat, esk_lon = 49.0464700608647, 8.44612290974462
             distance_to_esk = self._haversine_distance(
                 prop.lat, prop.lon, esk_lat, esk_lon
             )

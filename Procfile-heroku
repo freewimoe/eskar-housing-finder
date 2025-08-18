@@ -1,7 +1,0 @@
-# Heroku Procfile - Choose deployment version
-
-# Full Application (default)
-web: streamlit run app.py --server.port=$PORT --server.headless=true --server.enableCORS=false --server.enableXsrfProtection=false
-
-# Lightweight Heroku Version (under 500MB)
-# web: streamlit run app_heroku.py --server.port=$PORT --server.headless=true --server.enableCORS=false --server.enableXsrfProtection=false
