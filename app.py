@@ -18,6 +18,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+from pathlib import Path
 import folium
 from streamlit_folium import st_folium
 import sys
@@ -59,6 +60,15 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Define robust, cross-platform paths
+BASE_PATH = Path(__file__).resolve().parent
+DATA_PATH = BASE_PATH / "data"
+CSV_PATH = DATA_PATH / "eskar_housing_data.csv"
+DB_PATH = DATA_PATH / "feedback.db"
+
+# Ensure data directory exists
+DATA_PATH.mkdir(exist_ok=True)
 
 # Custom CSS for professional styling
 st.markdown("""
@@ -266,7 +276,7 @@ def get_enhanced_ml_predictions(df, target_features):
     return predictions, {'simple_rf': {'accuracy': accuracy}}, X
     try:
         # Try to load real ESK data
-        df = pd.read_csv('data/eskar_housing_data.csv')
+        df = pd.read_csv(CSV_PATH)
         return df
     except FileNotFoundError:
         # Generate fresh ESK data using our generator
@@ -321,13 +331,14 @@ def show_welcome_page():
     </div>
     """, unsafe_allow_html=True)
 
-def show_property_search():
+def show_property_search(df=None):
     """Display property search with ESK-optimized filters"""
     st.title("🔍 Property Search")
     st.markdown("### Find your perfect home with ESK-optimized filters")
     
-    # Load data
-    df = load_housing_data()
+    # Load data if not provided
+    if df is None:
+        df = load_housing_data()
     
     # Sidebar filters
     st.sidebar.header("🎯 Search Filters")
@@ -434,13 +445,14 @@ def show_property_search():
         use_container_width=True
     )
 
-def show_ml_predictions():
+def show_ml_predictions(df=None):
     """Show ML price prediction interface"""
     st.title("🤖 AI Price Prediction")
     st.markdown("### Get instant property value estimates using machine learning")
     
-    # Load data
-    df = load_housing_data()
+    # Load data if not provided
+    if df is None:
+        df = load_housing_data()
     
     col1, col2 = st.columns([1, 1])
     
@@ -527,12 +539,14 @@ def train_price_model(df):
     
     return model, accuracy
 
-def show_market_analytics():
+def show_market_analytics(df=None):
     """Display market analytics and insights"""
     st.title("📊 Market Analytics")
     st.markdown("### Karlsruhe housing market insights for ESK families")
     
-    df = load_housing_data()
+    # Load data if not provided
+    if df is None:
+        df = load_housing_data()
     
     # Market overview
     col1, col2, col3, col4 = st.columns(4)
@@ -591,13 +605,14 @@ def show_market_analytics():
     )
     st.plotly_chart(fig2, use_container_width=True)
 
-def show_interactive_map():
+def show_interactive_map(df=None):
     """Display interactive map with ESK properties and reference locations"""
     st.title("🗺️ Interactive Map")
     st.markdown("### Explore properties with key ESK reference locations")
     
-    # Load data
-    df = load_housing_data()
+    # Load data if not provided
+    if df is None:
+        df = load_housing_data()
     
     # Filter controls in sidebar
     with st.sidebar:
@@ -735,26 +750,31 @@ def main():
         
         st.markdown("---")
     
+    # Load data centrally once for all pages that need it
+    df = None
+    if page in ["🔍 Property Search", "🗺️ Interactive Map", "🤖 AI Predictions", "📊 Market Analytics"]:
+        df = load_housing_data()
+    
     # Route to selected page with enhanced features
     if page == "🏠 Welcome":
         show_welcome_page()
     elif page == "🔍 Property Search":
-        show_property_search()
+        show_property_search(df)
         # Track search activity
         if feedback_system and 'session_id' in st.session_state:
             feedback_system.update_session_activity(st.session_state.session_id, 'search')
     elif page == "🗺️ Interactive Map":
-        show_interactive_map()
+        show_interactive_map(df)
         # Track map activity
         if feedback_system and 'session_id' in st.session_state:
             feedback_system.update_session_activity(st.session_state.session_id, 'view_map')
     elif page == "🤖 AI Predictions":
-        show_ml_predictions()
+        show_ml_predictions(df)
         # Track prediction requests
         if feedback_system and 'session_id' in st.session_state:
             feedback_system.update_session_activity(st.session_state.session_id, 'request_prediction')
     elif page == "📊 Market Analytics":
-        show_market_analytics()
+        show_market_analytics(df)
     
     # Add feedback page with persistent state
     if st.sidebar.button("💬 Give Feedback"):
@@ -864,7 +884,7 @@ def _store_feedback_locally(satisfaction, feedback_type, comments):
         from datetime import datetime
         
         # Create or connect to local feedback database
-        conn = sqlite3.connect('data/feedback.db')
+        conn = sqlite3.connect(str(DB_PATH))
         cursor = conn.cursor()
         
         # Create table if it doesn't exist
