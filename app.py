@@ -727,6 +727,12 @@ def main():
     df = None
     if page in ["🔍 Property Search", "🗺️ Interactive Map", "🤖 AI Predictions", "📊 Market Analytics"]:
         df = load_housing_data()
+
+    # Show analytics dashboard at TOP if requested (important for UX)
+    if st.session_state.get('show_analytics', False):
+        show_analytics_dashboard()
+        st.markdown("---")  # Separator after analytics
+        return  # Don't show normal pages when analytics is active
     
     # Route to selected page with enhanced features
     if page == "🏠 Welcome":
@@ -753,9 +759,25 @@ def main():
     if st.sidebar.button("💬 Give Feedback"):
         st.session_state.show_feedback = True
     
-    # Add analytics page with persistent state
+    # Add analytics page with persistent state and auto-scroll
     if st.sidebar.button("📈 Production Analytics"):
         st.session_state.show_analytics = True
+        st.rerun()  # Refresh page to show analytics at top
+    
+    # Show analytics dashboard at the top when requested
+    if st.session_state.get('show_analytics', False):
+        st.markdown("---")
+        st.markdown("# 📈 Production Analytics Dashboard")
+        st.markdown("### Real-time App Performance & User Insights")
+        
+        # Close button
+        if st.button("❌ Close Analytics"):
+            st.session_state.show_analytics = False
+            st.rerun()
+        
+        show_analytics_dashboard()
+        st.markdown("---")
+        return  # Stop here - only show analytics
     
     # About ESKAR section at bottom of sidebar
     with st.sidebar:
@@ -771,10 +793,6 @@ def main():
     
     if st.session_state.get('show_feedback', False):
         show_feedback_section()
-    
-    # Show analytics if requested
-    if st.session_state.get('show_analytics', False):
-        show_analytics_dashboard()
     
     # Footer with production info
     st.markdown("---")
@@ -894,12 +912,13 @@ def _store_feedback_locally(satisfaction, feedback_type, comments):
 
 def show_analytics_dashboard():
     """Simple analytics dashboard for production insights"""
-    st.subheader("📈 ESKAR Production Analytics")
+    # Prominent header to show the feature is active
+    st.markdown('<div class="main-header"><h1>📈 ESKAR Production Analytics</h1><p>Live Dashboard - Property & User Insights</p></div>', unsafe_allow_html=True)
     
-    # Add close button
-    col1, col2 = st.columns([6, 1])
+    # Add close button prominently at top
+    col1, col2 = st.columns([5, 1])
     with col2:
-        if st.button("✖️ Schließen"):
+        if st.button("✖️ Schließen", help="Analytics Dashboard schließen"):
             st.session_state.show_analytics = False
             st.rerun()
     
