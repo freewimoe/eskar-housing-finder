@@ -164,6 +164,60 @@ The ESKAR application features a multi-page Streamlit interface designed for int
 
 * **Unicode Logging Warnings:** The application displays Unicode encoding warnings in Windows terminal logs when using emoji characters in logging messages. This is a cosmetic issue related to Windows console encoding and does not affect application functionality. The warnings occur during normal operation and can be safely ignored.
 
+## **Epics and User Stories**
+
+### **Epic 1: Information Gathering and Data Collection**
+
+**User Story 1.1:** As a data analyst, I can import housing dataset from synthetic generation so that I can save the data in a local directory for analysis.
+
+**User Story 1.2:** As a data analyst, I can load saved housing dataset so that I can analyze ESK-specific housing requirements and market conditions.
+
+### **Epic 2: Data Visualization, Cleaning, and Preparation**
+
+**User Story 2.1:** As a ESK family, I can visualize housing market data so that I can understand which neighborhoods and properties are most suitable (Business Requirement 1).
+
+**User Story 2.2:** As a data analyst, I can evaluate the housing dataset to determine what data cleaning tasks need to be carried out for ML modeling.
+
+**User Story 2.3:** As a data analyst, I can handle missing data and outliers to prepare the dataset for machine learning model training.
+
+**User Story 2.4:** As a data scientist, I can perform feature engineering to best transform housing data for ESK-optimized ML predictions.
+
+### **Epic 3: Model Training, Optimization and Validation**
+
+**User Story 3.1:** As a data scientist, I can split housing data into train and test sets to prepare it for ML model development.
+
+**User Story 3.2:** As a data engineer, I can fit an ML pipeline with housing data to prepare the price prediction model for deployment.
+
+**User Story 3.3:** As a data engineer, I can determine the best algorithm for predicting property prices to optimize model performance (Business Requirement 2).
+
+**User Story 3.4:** As a data engineer, I can carry out hyperparameter optimization to ensure the ML model gives the most accurate price predictions (Business Requirement 2).
+
+**User Story 3.5:** As a data scientist, I can evaluate the ML model's performance to determine whether it successfully predicts property prices within acceptable accuracy ranges (Business Requirement 2).
+
+### **Epic 4: Dashboard Planning, Designing, and Development**
+
+**User Story 4.1:** As a non-technical user, I can view a project summary that describes ESKAR, the dataset, and business requirements to understand the application at a glance.
+
+**User Story 4.2:** As a non-technical user, I can view project hypotheses and validations to understand what the project aimed to achieve and whether it was successful.
+
+**User Story 4.3:** As a ESK family, I can input property characteristics and receive AI-powered price predictions to make informed housing decisions (Business Requirement 2).
+
+**User Story 4.4:** As a technical user, I can view correlation analysis and feature importance to understand how the ML model reaches its conclusions (Business Requirement 1).
+
+**User Story 4.5:** As a technical user, I can view model performance metrics and statistics to understand prediction accuracy and reliability (Business Requirement 2).
+
+**User Story 4.6:** As a house hunter, I can search properties with advanced filters so that I can find ESK-optimized housing options efficiently.
+
+**User Story 4.7:** As a mobile user, I can access the application on smartphone devices so that I can search properties on the go.
+
+### **Epic 5: Dashboard Deployment and Release**
+
+**User Story 5.1:** As a user, I can view the ESKAR project on a live deployed website via Streamlit Cloud.
+
+**User Story 5.2:** As a technical user, I can follow deployment instructions in the README to fork the repository and deploy the project independently.
+
+**User Story 5.3:** As an end user, I can provide feedback on properties and predictions so that the system can improve over time.
+
 ## **Testing**
 
 ### **Manual Testing**
@@ -286,6 +340,39 @@ All Python code in the ESKAR Housing Finder project was validated using the **Co
 - VS Code Python formatting extensions
 
 The codebase maintains high standards of Python code quality while prioritizing functionality and readability for this machine learning application.
+
+### **Automated Unit Tests**
+
+Automated unit tests have been implemented for core functionality to ensure system reliability and facilitate continuous integration. The test suite covers:
+
+**Core API Testing:**
+- **Real Estate API**: Property data retrieval, distance calculations, and ESK suitability scoring
+- **User Feedback System**: Feedback submission, validation, and storage mechanisms  
+- **Data Generation**: Synthetic housing data creation and validation
+
+**Test Coverage:**
+```bash
+# Run test suite
+python -m pytest tests/ -v
+
+# Test results summary
+tests/test_real_estate_api.py::test_property_distance_calculation ✅ PASSED
+tests/test_real_estate_api.py::test_esk_suitability_scoring ✅ PASSED  
+tests/test_user_feedback.py::test_feedback_submission ✅ PASSED
+tests/test_user_feedback.py::test_feedback_validation ✅ PASSED
+tests/test_data_generator.py::test_property_generation ✅ PASSED
+```
+
+**Testing Framework:**
+- **pytest** for test execution and organization
+- **unittest.mock** for external dependency mocking
+- **Continuous validation** during development cycle
+
+**Future Testing Enhancements:**
+- Integration testing for Streamlit components
+- Load testing for production scalability
+- A/B testing framework validation
+- ML model accuracy regression testing
 
 ## **Deployment**
 
